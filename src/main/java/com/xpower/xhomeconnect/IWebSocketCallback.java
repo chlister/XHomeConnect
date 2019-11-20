@@ -1,4 +1,6 @@
-import websocket.SocketDTO;
+package com.xpower.xhomeconnect;
+
+import com.xpower.xhomeconnect.websocket.SocketDTO;
 
 import java.util.List;
 
@@ -15,7 +17,7 @@ import java.util.List;
  * void detectLocalAgents()
  * SocketDTO registerSocket()
  */
-public interface IWebSocketCallBack {
+public interface IWebSocketCallback {
 
     /**
      * Used to return a list of socketDTO objects

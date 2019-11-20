@@ -4,12 +4,12 @@
  * @since 11/20/19
  */
 
-package websocket;
+package com.xpower.xhomeconnect.websocket;
 
 public interface IWebSocketManager {
 
     /**
-     * listener event when websocket opens
+     * listener event when com.xpower.xhomeconnect.websocket opens
      */
     void onOpen();
 
@@ -19,7 +19,7 @@ public interface IWebSocketManager {
     void onClose();
 
     /**
-     * When the client sends a message to the websocket
+     * When the client sends a message to the com.xpower.xhomeconnect.websocket
      */
     void onMessage();
 

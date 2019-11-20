@@ -4,7 +4,7 @@
  * @since 11/20/19
  */
 
-package websocket;
+package com.xpower.xhomeconnect.websocket;
 
 /**
  * Socket DTO to be sent over HTTP connection

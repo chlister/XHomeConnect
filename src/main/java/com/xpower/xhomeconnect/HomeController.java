@@ -3,6 +3,7 @@
  * @version 1.0
  * @since 11/20/19
  */
+package com.xpower.xhomeconnect;
 
 /**
  * Main class of the XHomeConnect module.
