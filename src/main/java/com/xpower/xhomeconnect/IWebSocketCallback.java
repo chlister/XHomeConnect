@@ -1,7 +1,9 @@
 package com.xpower.xhomeconnect;
 
 import com.xpower.xhomeconnect.websocket.SocketDTO;
+import org.glassfish.grizzly.http.server.Response;
 
+import java.net.http.HttpResponse;
 import java.util.List;
 
 /**
@@ -32,8 +34,8 @@ public interface IWebSocketCallback {
 
     /**
      * Used to register a specific socket.
-     * @param socket Socket object containing the info to be updated.
+     * @param socketDTO Socket object containing the info to be updated.
      * @return SocketDTO same object as send to denote success from the receivers end.
      */
-    SocketDTO registerSocket(SocketDTO socket);
+    Response registerSocket(SocketDTO socketDTO);
 }
