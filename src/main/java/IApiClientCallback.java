@@ -2,13 +2,14 @@ import websocket.SocketDTO;
 import java.util.List;
 
 /**
- * TODO: Add interface description
- *
  * @author Marc R. K.
  * @version 1.0
  * @since 11/20/19
  */
 
+/**
+ * Callback interface for the API connection
+ */
 public interface IApiClientCallback {
 
     /**
