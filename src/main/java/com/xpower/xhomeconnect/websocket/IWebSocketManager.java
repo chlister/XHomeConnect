@@ -27,5 +27,5 @@ public interface IWebSocketManager {
      * When a socket needs to be updated
      * @param socket SocketDTO
      */
-    void updateSocket(SocketDTO socket);
+    void updateSocket(SocketDTO socketDTO);
 }
