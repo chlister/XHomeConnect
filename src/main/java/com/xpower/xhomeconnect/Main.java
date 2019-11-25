@@ -16,25 +16,27 @@ public class Main {
 
     /**
      * Main class initialises the Webserver.
-     *
      * @param args - arguments
      * @author Marc R. K.
-     * @version 0.2
+     * @version 0.3
      * @status Defined
      * @since 11/20/19
      */
     public static void main(String[] args) {
 
-        HttpServer server = HttpServer.createSimpleServer("src/main/webapp", 20860);
+        // Create a server, first param docroot (only used if .html files are in the project) therefore using port which isn't HTTP
+        HttpServer server =
+                HttpServer.createSimpleServer("src/main/java/com/xpower/xhomeconnect/websocket", 20860);
         WebSocketAddOn addon = new WebSocketAddOn();
 
         server.getListeners().forEach(x -> {
             x.registerAddOn(addon);
         });
 
+        // Defining which class handles the websocket part
         WebSocketApplication websocketApp = new XHomeApplication();
 
-        // ws://localhost:20860/api/home
+        // ws://localhost:20860/api/home - url for the websocket.
         WebSocketEngine.getEngine().register("/api", "/home", websocketApp);
 
         // register shutdown hook
