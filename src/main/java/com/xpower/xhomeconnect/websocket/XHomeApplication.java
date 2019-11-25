@@ -41,7 +41,8 @@ public class XHomeApplication extends WebSocketApplication implements IWebSocket
      */
     @Override
     public void onConnect(WebSocket webSocket) {
-
+        System.out.println("Client connected: " + webSocket.toString());
+        clients.add(webSocket);
     }
 
     /**
@@ -53,6 +54,7 @@ public class XHomeApplication extends WebSocketApplication implements IWebSocket
      */
     @Override
     public void onMessage(WebSocket webSocket, String message) {
-
+        System.out.println("Client: " + webSocket + " Sends message: " + message);
+        webSocket.send("Hello client!!!!");
     }
 }
