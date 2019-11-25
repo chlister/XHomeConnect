@@ -16,21 +16,45 @@ public class WebSocketManager implements IWebSocketManager {
         this.callback = callback;
     }
 
+    /**
+     * @author  Marc R. K.
+     * @version 0.1
+     * @since   11/20/19
+     * @status  Defined
+     */
     @Override
     public void onOpen() {
 
     }
 
+    /**
+     * @author  Marc R. K.
+     * @version 0.1
+     * @since   11/20/19
+     * @status  Defined
+     */
     @Override
     public void onClose() {
 
     }
 
+    /**
+     * @author  Marc R. K.
+     * @version 0.1
+     * @since   11/20/19
+     * @status  Defined
+     */
     @Override
     public void onMessage() {
 
     }
 
+    /**
+     * @author  Marc R. K.
+     * @version 0.1
+     * @since   11/20/19
+     * @status  Defined
+     */
     @Override
     public void updateSocket(SocketDTO socket) {
 

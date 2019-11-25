@@ -1,6 +1,4 @@
 /**
- * TODO: Add interface description
- *
  * @author Marc R. K.
  * @version 1.0
  * @since 11/20/19

@@ -1,6 +1,4 @@
 /**
- * TODO: Add class description
- *
  * @author Marc R. K.
  * @version 1.0
  * @since 11/21/19
@@ -9,21 +7,21 @@
 package com.xpower.xhomeconnect;
 
 import com.xpower.xhomeconnect.websocket.XHomeApplication;
-import org.glassfish.grizzly.http.Protocol;
 import org.glassfish.grizzly.http.server.HttpServer;
-import org.glassfish.grizzly.http.server.NetworkListener;
 import org.glassfish.grizzly.websockets.*;
-import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
-import org.glassfish.jersey.server.ResourceConfig;
 
 import java.io.IOException;
-import java.net.URI;
 
 public class Main {
 
     /**
-     * Main method. handles start of controller class
-     * @param args
+     * Main class initialises the Webserver.
+     *
+     * @param args - arguments
+     * @author Marc R. K.
+     * @version 0.2
+     * @status Defined
+     * @since 11/20/19
      */
     public static void main(String[] args) {
 
@@ -49,9 +47,19 @@ public class Main {
             }
         }, "shutdownHook"));
 
-        server.start();
+
+        try {
+            server.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         System.out.println("Started server");
 
-        Thread.currentThread().join();
+        try {
+            Thread.currentThread().join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -1,3 +1,4 @@
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -8,7 +9,8 @@ import org.junit.Test;
 
 public class HomeControllerTest {
     @Test
-    void initTest(){
+   public void initTest(){
         // TODO test to be defined when other packages are ready
+        Assert.assertFalse(true);
     }
 }
