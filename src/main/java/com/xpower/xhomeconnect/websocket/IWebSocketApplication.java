@@ -8,7 +8,6 @@ package com.xpower.xhomeconnect.websocket;
 
 import org.glassfish.grizzly.websockets.WebSocket;
 
-
 public interface IWebSocketApplication {
     void onConnect(WebSocket webSocket);
     void onClose(WebSocket webSocket);
