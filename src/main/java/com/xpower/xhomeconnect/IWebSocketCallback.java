@@ -1,9 +1,7 @@
 package com.xpower.xhomeconnect;
 
-import com.xpower.xhomeconnect.websocket.SocketDTO;
-import org.glassfish.grizzly.http.util.HttpStatus;
-
-import java.util.List;
+import com.xpower.message.model.SocketDTO;
+import org.glassfish.grizzly.websockets.WebSocket;
 
 /**
  * @author Marc R. K.
@@ -13,9 +11,9 @@ import java.util.List;
 
 public interface IWebSocketCallback {
 
-    List<SocketDTO> getSockets();
+    void getSockets(WebSocket socket);
 
     void detectLocalAgents();
 
-    HttpStatus registerSocket(SocketDTO socketDTO);
+    void registerSocket(SocketDTO socketDTO);
 }

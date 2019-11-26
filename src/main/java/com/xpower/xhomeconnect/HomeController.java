@@ -5,12 +5,14 @@
  */
 package com.xpower.xhomeconnect;
 
-import com.xpower.xhomeconnect.websocket.SocketDTO;
+import com.xpower.message.RespondCodes;
+import com.xpower.xhomeconnect.agent.AgentManager;
+import com.xpower.xhomeconnect.agent.IAgentManager;
+import com.xpower.message.model.SocketDTO;
 import com.xpower.xhomeconnect.websocket.WebSocketManager;
 import org.glassfish.grizzly.http.server.HttpServer;
-import org.glassfish.grizzly.http.util.HttpStatus;
+import org.glassfish.grizzly.websockets.WebSocket;
 import org.glassfish.grizzly.websockets.WebSocketAddOn;
-import org.glassfish.grizzly.websockets.WebSocketApplication;
 import org.glassfish.grizzly.websockets.WebSocketEngine;
 
 import java.io.IOException;
@@ -21,15 +23,17 @@ import java.util.List;
  */
 public class HomeController implements IWebSocketCallback {
     IAgentManager mAgentManager; // TODO class not defined
-    WebSocketApplication mWebSocketManager;
+    WebSocketManager mWebSocketManager;
 //    IApiClientManager mApiClientManager; - TODO class not defined
+
 
     /**
      * Initialises the HTTP server - which controls the end point for the websocket
-     * @author  Marc R. K.
-     * @version 0.1
-     * @since   11/20/19
-     * @status  Defined
+     *
+     * @author Marc R. K.
+     * @version 0.3
+     * @status Under Development
+     * @since 11/20/19
      */
     public void init() {
         // Create a server, first param docroot (only used if .html files are in the project) therefore using port which isn't HTTP
@@ -75,22 +79,30 @@ public class HomeController implements IWebSocketCallback {
 
     /**
      * Used to return a list of socketDTOs
-     * @author  Marc R. K.
-     * @version 0.1
-     * @since   11/20/19
-     * @status  Defined
+     *
+     * @author Marc R. K.
+     * @version 0.3
+     * @status Under Development
+     * @since 11/20/19
      */
     @Override
-    public List<SocketDTO> getSockets() {
-        return mAgentManager.getSockets();
+    public void getSockets(WebSocket socket) {
+         mAgentManager = new AgentManager(new IAgentGetSocketsCallback() {
+             @Override
+             public void getSockets(List<SocketDTO> sockets, RespondCodes code) {
+                mWebSocketManager.returnSockets(socket, code, sockets);
+             }
+         });
+         mAgentManager.getSockets();
     }
 
     /**
      * Used to search local net for units matching the Netio agent signature.
-     * @author  Marc R. K.
+     *
+     * @author Marc R. K.
      * @version 0.1
-     * @since   11/20/19
-     * @status  Defined
+     * @status Defined
+     * @since 11/20/19
      */
     @Override
     public void detectLocalAgents() {
@@ -99,16 +111,14 @@ public class HomeController implements IWebSocketCallback {
 
     /**
      * Used to register a specific socket.
-     * @author  Marc R. K.
+     * @author Marc R. K.
      * @version 0.1
-     * @since   11/20/19
-     * @status  Defined
-     * @return HttpStatus - returns whether the request is successful
+     * @status Under Development
+     * @since 11/20/19
      */
     @Override
-public HttpStatus registerSocket(SocketDTO socketDTO) {
+    public void registerSocket(SocketDTO socketDTO) {
         mAgentManager.updateSocket(socketDTO);
-        return HttpStatus.OK_200;
     }
 }
 
