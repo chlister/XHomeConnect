@@ -66,9 +66,9 @@ public class WebSocketManager extends WebSocketApplication {
             case GET_SOCKETS:
                 callback.getSockets(socket);
                 break;
-            case DETECT_AGENTS:
-                callback.detectLocalAgents();
-                break;
+//            case DETECT_AGENTS:
+//                callback.detectLocalAgents();
+//                break;
             default:
                 break;
         }

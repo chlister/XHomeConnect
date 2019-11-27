@@ -96,18 +96,18 @@ public class HomeController implements IWebSocketCallback {
          mAgentManager.getSockets();
     }
 
-    /**
-     * Used to search local net for units matching the Netio agent signature.
-     *
-     * @author Marc R. K.
-     * @version 0.1
-     * @status Defined
-     * @since 11/20/19
-     */
-    @Override
-    public void detectLocalAgents() {
-        mAgentManager.scanNetwork();
-    }
+//    /**
+//     * Used to search local net for units matching the Netio agent signature.
+//     *
+//     * @author Marc R. K.
+//     * @version 0.1
+//     * @status Defined
+//     * @since 11/20/19
+//     */
+//    @Override
+//    public void detectLocalAgents() {
+//        mAgentManager.scanNetwork();
+//    }
 
     /**
      * Used to register a specific socket.

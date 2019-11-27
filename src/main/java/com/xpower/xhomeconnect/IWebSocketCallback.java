@@ -13,7 +13,7 @@ public interface IWebSocketCallback {
 
     void getSockets(WebSocket socket);
 
-    void detectLocalAgents();
+//    void detectLocalAgents(); // websocket only needs to know about homeSockets
 
     void registerSocket(SocketDTO socketDTO);
 }
