@@ -27,29 +27,22 @@ public class WebSocketManagerTest {
         sockets.add(new SocketDTO(1, 1, "socket", "Fridge"));
         messageGetSockets = new Message(RespondCodes.OK, MethodCode.GET_SOCKETS, null);
         messageRegisterSocket = new Message(RespondCodes.OK, MethodCode.REGISTER, sockets.get(0));
-        messageDetectLocalAgents = new Message(RespondCodes.OK, MethodCode.DETECT_AGENTS, null);
 
 
         // Checks if the method reaches this part of the code
         WebSocketManager manager = new WebSocketManager(new IWebSocketCallback() {
             @Override
             public void getSockets(WebSocket socket) {
-                Assert.assertTrue(true);
-            }
-
-            @Override
-            public void detectLocalAgents() {
-                Assert.fail();
+                Assert.assertTrue(false);
             }
 
             @Override
             public void registerSocket(SocketDTO socketDTO) {
-                Assert.assertTrue(true);
+                Assert.assertTrue(false);
             }
         });
 
         manager.onMessage(null, messageGetSockets.encode());
         manager.onMessage(null, messageRegisterSocket.encode());
-        manager.onMessage(null, messageDetectLocalAgents.encode());
     }
 }
