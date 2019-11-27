@@ -16,4 +16,5 @@ public interface IWebSocketCallback {
 //    void detectLocalAgents(); // websocket only needs to know about homeSockets
 
     void registerSocket(SocketDTO socketDTO);
+    void changeState(SocketDTO socketDTO);
 }

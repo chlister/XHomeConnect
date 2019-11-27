@@ -16,6 +16,7 @@ import java.util.List;
  */
 public class SocketDTO {
     private int id, agentId;
+    private boolean state;
     private String name, applianceType;
 
     /**
@@ -24,10 +25,11 @@ public class SocketDTO {
      * @status Under Development
      * @since 11/20/19
      */
-    public SocketDTO(int id, int agentId, String name, String applianceType) {
+    public SocketDTO(int id, int agentId, String name, String applianceType, boolean state) {
         this.id = id;
         this.agentId = agentId;
         this.name = name;
+        this.state = state;
         this.applianceType = applianceType;
     }
 
@@ -68,6 +70,14 @@ public class SocketDTO {
             dto.add(deserialize(treeMap));
         }
         return dto;
+    }
+
+    public boolean getState() {
+        return state;
+    }
+
+    public void setState(boolean state) {
+        this.state = state;
     }
 
     public int getId() {

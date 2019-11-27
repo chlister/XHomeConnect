@@ -11,5 +11,5 @@ package com.xpower.message;
 public enum MethodCode {
     REGISTER,
     GET_SOCKETS,
-    DETECT_AGENTS
+    CHANGE_SOCKET_STATE
 }

@@ -21,11 +21,14 @@ import java.util.List;
 /**
  * Main class of the XHomeConnect module.
  */
-public class HomeController implements IWebSocketCallback {
-    IAgentManager mAgentManager; // TODO class not defined
+public class HomeController implements IWebSocketCallback, IAgentCallback  {
+    IAgentManager mAgentManager;
     WebSocketManager mWebSocketManager;
 //    IApiClientManager mApiClientManager; - TODO class not defined
 
+    public HomeController() {
+        mAgentManager = new AgentManager(this);
+    }
 
     /**
      * Initialises the HTTP server - which includes the end point for the websocket
@@ -119,6 +122,12 @@ public class HomeController implements IWebSocketCallback {
     @Override
     public void registerSocket(SocketDTO socketDTO) {
         mAgentManager.updateSocket(socketDTO);
+    }
+
+    @Override
+    public void changeState(SocketDTO socketDTO) {
+        mAgentManager.changeState(socketDTO);
+
     }
 }
 

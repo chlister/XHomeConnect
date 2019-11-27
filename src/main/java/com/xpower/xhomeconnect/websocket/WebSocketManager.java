@@ -6,6 +6,7 @@
 
 package com.xpower.xhomeconnect.websocket;
 
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.internal.LinkedTreeMap;
 import com.xpower.message.Message;
 import com.xpower.message.MethodCode;
@@ -50,6 +51,8 @@ public class WebSocketManager extends WebSocketApplication {
     }
 
     /**
+     * The onMessage event handles a collection of commands.
+     *
      * @author Marc R. K.
      * @version 0.3
      * @status Under Development
@@ -58,21 +61,31 @@ public class WebSocketManager extends WebSocketApplication {
     @Override
     public void onMessage(WebSocket socket, String json) {
         System.out.println("Message from " + socket + " [" + json + "]");
-        Message message = new Message(json);
-        switch (message.getMethodCode()) {
-            case REGISTER:
-                callback.registerSocket(SocketDTO.deserialize((LinkedTreeMap) message.getObj()));
-                break;
-            case GET_SOCKETS:
-                callback.getSockets(socket);
-                break;
+        Message message;
+        try {
+            message = new Message(json);
+            switch (message.getMethodCode()) {
+                case REGISTER:
+                    callback.registerSocket(SocketDTO.deserialize((LinkedTreeMap) message.getObj()));
+                    break;
+                case GET_SOCKETS:
+                    callback.getSockets(socket);
+                    break;
+                case CHANGE_SOCKET_STATE:
+                    callback.changeState(SocketDTO.deserialize((LinkedTreeMap) message.getObj()));
+                    break;
 //            case DETECT_AGENTS:
 //                callback.detectLocalAgents();
 //                break;
-            default:
-                break;
+                default:
+                    // TODO: error message to the socket
+                    System.out.println("default switch case");
+                    break;
+            }
+        } catch (NullPointerException e) {
+            System.out.println("JSON doesn't match convention");
+            System.out.println(json);
         }
-
     }
 
     /**

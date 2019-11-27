@@ -14,6 +14,7 @@ public interface IAgentManager {
     void getSockets();
 //    Agent getAgent(String agent); // TODO implement when Agent class is defined
     void updateSocket(SocketDTO socketDTO);
+    void changeState(SocketDTO socketDTO);
     List<String> scanNetwork();
 
 }
