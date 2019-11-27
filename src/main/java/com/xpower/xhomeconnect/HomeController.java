@@ -28,7 +28,7 @@ public class HomeController implements IWebSocketCallback {
 
 
     /**
-     * Initialises the HTTP server - which controls the end point for the websocket
+     * Initialises the HTTP server - which includes the end point for the websocket
      *
      * @author Marc R. K.
      * @version 0.3
