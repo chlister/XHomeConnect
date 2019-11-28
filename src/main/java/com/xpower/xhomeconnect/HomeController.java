@@ -8,7 +8,7 @@ package com.xpower.xhomeconnect;
 import com.xpower.message.RespondCodes;
 import com.xpower.xhomeconnect.agent.AgentManager;
 import com.xpower.xhomeconnect.agent.IAgentManager;
-import com.xpower.message.model.SocketDTO;
+import com.xpower.message.model.OutletDTO;
 import com.xpower.xhomeconnect.websocket.WebSocketManager;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.websockets.WebSocket;
@@ -16,6 +16,7 @@ import org.glassfish.grizzly.websockets.WebSocketAddOn;
 import org.glassfish.grizzly.websockets.WebSocketEngine;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,6 +27,7 @@ public class HomeController implements IWebSocketCallback, IAgentCallback  {
     WebSocketManager mWebSocketManager;
 //    IApiClientManager mApiClientManager; - TODO class not defined
 
+    List<OutletDTO> sockets = new ArrayList<>();
     public HomeController() {
         mAgentManager = new AgentManager(this);
     }
@@ -41,7 +43,7 @@ public class HomeController implements IWebSocketCallback, IAgentCallback  {
     public void init() {
         // Create a server, first param docroot (only used if .html files are in the project) therefore using port which isn't HTTP
         HttpServer server =
-                HttpServer.createSimpleServer("src/main/java/com/xpower/xhomeconnect/websocket", 20860);
+                HttpServer.createSimpleServer("src/main/java/com/xpower/xhomeconnect/websocket", 80);
         WebSocketAddOn addon = new WebSocketAddOn();
 
         server.getListeners().forEach(x -> {
@@ -64,7 +66,11 @@ public class HomeController implements IWebSocketCallback, IAgentCallback  {
             }
         }, "shutdownHook"));
 
-
+        sockets.add(new OutletDTO(1, 1, "LAPTOP", "LAPTOP"));
+        sockets.add(new OutletDTO(1, 2, "NON", "NON"));
+        sockets.add(new OutletDTO(1, 3, "COFFEE_MACHINE", "COFFEE_MACHINE"));
+        sockets.add(new OutletDTO(2, 3, "", "NON"));
+        sockets.add(new OutletDTO(2, 4, "", "LAPTOP"));
         try {
             server.start();
         } catch (IOException e) {
@@ -90,27 +96,9 @@ public class HomeController implements IWebSocketCallback, IAgentCallback  {
      */
     @Override
     public void getSockets(WebSocket socket) {
-         mAgentManager = new AgentManager(new IAgentGetSocketsCallback() {
-             @Override
-             public void getSockets(List<SocketDTO> sockets, RespondCodes code) {
-                mWebSocketManager.returnSockets(socket, code, sockets);
-             }
-         });
-         mAgentManager.getSockets();
+        // For testing only TODO return via agentmanager
+        mWebSocketManager.returnSockets(socket, RespondCodes.OK, sockets);
     }
-
-//    /**
-//     * Used to search local net for units matching the Netio agent signature.
-//     *
-//     * @author Marc R. K.
-//     * @version 0.1
-//     * @status Defined
-//     * @since 11/20/19
-//     */
-//    @Override
-//    public void detectLocalAgents() {
-//        mAgentManager.scanNetwork();
-//    }
 
     /**
      * Used to register a specific socket.
@@ -120,8 +108,14 @@ public class HomeController implements IWebSocketCallback, IAgentCallback  {
      * @since 11/20/19
      */
     @Override
-    public void registerSocket(SocketDTO socketDTO) {
-        mAgentManager.updateSocket(socketDTO);
+    public void registerSocket(OutletDTO outletDTO) {
+        for (OutletDTO sock: sockets) {
+            if (outletDTO.getAgentId() == sock.getAgentId() && outletDTO.getId() == sock.getId()){
+                sock.setApplianceType(outletDTO.getApplianceType());
+                sock.setName(outletDTO.getName());
+            }
+        }
+//                mAgentManager.updateSocket(socketDTO);
     }
 
     @Override

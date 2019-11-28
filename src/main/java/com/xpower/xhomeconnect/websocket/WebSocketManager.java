@@ -12,7 +12,7 @@ import com.xpower.message.Message;
 import com.xpower.message.MethodCode;
 import com.xpower.message.RespondCodes;
 import com.xpower.xhomeconnect.IWebSocketCallback;
-import com.xpower.message.model.SocketDTO;
+import com.xpower.message.model.OutletDTO;
 import org.glassfish.grizzly.websockets.DataFrame;
 import org.glassfish.grizzly.websockets.WebSocket;
 import org.glassfish.grizzly.websockets.WebSocketApplication;
@@ -66,13 +66,13 @@ public class WebSocketManager extends WebSocketApplication {
             message = new Message(json);
             switch (message.getMethodCode()) {
                 case REGISTER:
-                    callback.registerSocket(SocketDTO.deserialize((LinkedTreeMap) message.getObj()));
+                    callback.registerSocket(OutletDTO.deserialize((LinkedTreeMap) message.getObj()));
                     break;
                 case GET_SOCKETS:
                     callback.getSockets(socket);
                     break;
                 case CHANGE_SOCKET_STATE:
-                    callback.changeState(SocketDTO.deserialize((LinkedTreeMap) message.getObj()));
+                    callback.changeState(OutletDTO.deserialize((LinkedTreeMap) message.getObj()));
                     break;
 //            case DETECT_AGENTS:
 //                callback.detectLocalAgents();
@@ -88,14 +88,20 @@ public class WebSocketManager extends WebSocketApplication {
         }
     }
 
+    @Override
+    protected boolean onError(WebSocket webSocket, Throwable t) {
+        System.out.println("Socket encountered an error: " + t.getMessage());
+        return super.onError(webSocket, t);
+    }
+
     /**
      * @author Marc R. K.
      * @version 0.3
      * @status Defined
      * @since 11/20/19
      */
-    public void returnSockets(WebSocket socket, RespondCodes respondCodes, List<SocketDTO> sockets) {
+    public void returnSockets(WebSocket webSocket, RespondCodes respondCodes, List<OutletDTO> sockets) {
         Message message = new Message(respondCodes, MethodCode.GET_SOCKETS, sockets);
-        socket.send(message.encode());
+        webSocket.send(message.encode());
     }
 }

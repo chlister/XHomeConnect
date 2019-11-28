@@ -9,10 +9,10 @@
 package com.xpower.xhomeconnect;
 
 import com.xpower.message.RespondCodes;
-import com.xpower.message.model.SocketDTO;
+import com.xpower.message.model.OutletDTO;
 
 import java.util.List;
 
 public interface IAgentGetSocketsCallback {
-    void getSockets(List<SocketDTO> sockets, RespondCodes respondCodes);
+    void getSockets(List<OutletDTO> sockets, RespondCodes respondCodes);
 }

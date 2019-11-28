@@ -10,8 +10,7 @@ package com.xpower.message;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
-import com.xpower.message.model.IDeserialize;
-import com.xpower.message.model.SocketDTO;
+import com.xpower.message.model.OutletDTO;
 
 public class Message {
     private RespondCodes mRespondCodes;

@@ -10,7 +10,7 @@ import com.xpower.message.RespondCodes;
 import com.xpower.xhomeconnect.IAgentCallback;
 import com.xpower.xhomeconnect.IAgentChangeStateCallBack;
 import com.xpower.xhomeconnect.IAgentGetSocketsCallback;
-import com.xpower.message.model.SocketDTO;
+import com.xpower.message.model.OutletDTO;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -48,8 +48,8 @@ public class AgentManager implements IAgentManager {
      */
     @Override
     public void getSockets() {
-        List<SocketDTO> socketDTOS = new ArrayList<>();
-        mAgentGetSocketsCallback.getSockets(socketDTOS, RespondCodes.OK);
+        List<OutletDTO> outletDTOS = new ArrayList<>();
+        mAgentGetSocketsCallback.getSockets(outletDTOS, RespondCodes.OK);
     }
 
     /**
@@ -59,7 +59,7 @@ public class AgentManager implements IAgentManager {
      * @since 11/20/19
      */
     @Override
-    public void updateSocket(SocketDTO socketDTO) {
+    public void updateSocket(OutletDTO outletDTO) {
 
     }
 
@@ -74,7 +74,6 @@ public class AgentManager implements IAgentManager {
             }
         }
     }
-
     /**
      * @author Marc R. K.
      * @version 0.1

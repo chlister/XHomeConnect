@@ -1,6 +1,6 @@
 package com.xpower.xhomeconnect;
 
-import com.xpower.message.model.SocketDTO;
+import com.xpower.message.model.OutletDTO;
 import org.glassfish.grizzly.websockets.WebSocket;
 
 /**
@@ -15,6 +15,7 @@ public interface IWebSocketCallback {
 
 //    void detectLocalAgents(); // websocket only needs to know about homeSockets
 
-    void registerSocket(SocketDTO socketDTO);
-    void changeState(SocketDTO socketDTO);
+    void registerSocket(OutletDTO outletDTO);
+    void registerSocket(OutletDTO outletDTO);
+    void changeState(OutletDTO outletDTO);
 }
