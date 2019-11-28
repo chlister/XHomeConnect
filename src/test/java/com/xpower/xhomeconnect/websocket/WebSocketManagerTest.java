@@ -2,9 +2,8 @@ package com.xpower.xhomeconnect.websocket;
 
 import com.xpower.message.Message;
 import com.xpower.message.MethodCode;
-import com.xpower.message.RespondCodes;
 import com.xpower.xhomeconnect.IWebSocketCallback;
-import com.xpower.message.model.SocketDTO;
+import com.xpower.message.model.OutletDTO;
 import org.glassfish.grizzly.websockets.WebSocket;
 import org.junit.Assert;
 import org.junit.Test;
@@ -14,7 +13,7 @@ import java.util.List;
 
 public class WebSocketManagerTest {
 
-    private List<SocketDTO> sockets;
+    private List<OutletDTO> sockets;
     private Message messageGetSockets;
     private Message messageRegisterSocket;
     private Message messageRegisterSocketList;
@@ -24,7 +23,7 @@ public class WebSocketManagerTest {
     public void onMessage() {
         // Constructing variables
         sockets = new ArrayList<>();
-        sockets.add(new SocketDTO(1, 1, "socket", "Fridge"));
+        sockets.add(new OutletDTO(1, 1, "socket", "Fridge"));
         messageGetSockets = new Message(null, MethodCode.GET_SOCKETS, null);
         messageRegisterSocket = new Message(null, MethodCode.REGISTER, sockets.get(0));
 
@@ -37,7 +36,7 @@ public class WebSocketManagerTest {
             }
 
             @Override
-            public void registerSocket(SocketDTO socketDTO) {
+            public void registerSocket(OutletDTO socketDTO) {
                 Assert.assertTrue(true);
             }
         });

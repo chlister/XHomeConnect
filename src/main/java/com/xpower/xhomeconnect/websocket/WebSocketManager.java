@@ -11,12 +11,11 @@ import com.xpower.message.Message;
 import com.xpower.message.MethodCode;
 import com.xpower.message.RespondCodes;
 import com.xpower.xhomeconnect.IWebSocketCallback;
-import com.xpower.message.model.SocketDTO;
+import com.xpower.message.model.OutletDTO;
 import org.glassfish.grizzly.websockets.DataFrame;
 import org.glassfish.grizzly.websockets.WebSocket;
 import org.glassfish.grizzly.websockets.WebSocketApplication;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class WebSocketManager extends WebSocketApplication {
@@ -61,7 +60,7 @@ public class WebSocketManager extends WebSocketApplication {
         Message message = new Message(json);
         switch (message.getMethodCode()) {
             case REGISTER:
-                callback.registerSocket(SocketDTO.deserialize((LinkedTreeMap) message.getObj()));
+                callback.registerSocket(OutletDTO.deserialize((LinkedTreeMap) message.getObj()));
                 break;
             case GET_SOCKETS:
                 callback.getSockets(socket);
@@ -87,8 +86,8 @@ public class WebSocketManager extends WebSocketApplication {
      * @status Defined
      * @since 11/20/19
      */
-    public void returnSockets(WebSocket socket, RespondCodes respondCodes, List<SocketDTO> sockets) {
+    public void returnSockets(WebSocket webSocket, RespondCodes respondCodes, List<OutletDTO> sockets) {
         Message message = new Message(respondCodes, MethodCode.GET_SOCKETS, sockets);
-        socket.send(message.encode());
+        webSocket.send(message.encode());
     }
 }

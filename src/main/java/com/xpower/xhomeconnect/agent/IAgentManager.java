@@ -6,14 +6,14 @@
 
 package com.xpower.xhomeconnect.agent;
 
-import com.xpower.message.model.SocketDTO;
+import com.xpower.message.model.OutletDTO;
 
 import java.util.List;
 
 public interface IAgentManager {
     void getSockets();
 //    Agent getAgent(String agent); // TODO implement when Agent class is defined
-    void updateSocket(SocketDTO socketDTO);
+    void updateSocket(OutletDTO outletDTO);
     List<String> scanNetwork();
 
 }

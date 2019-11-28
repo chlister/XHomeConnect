@@ -6,9 +6,8 @@
 package com.xpower.xhomeconnect;
 
 import com.xpower.message.RespondCodes;
-import com.xpower.xhomeconnect.agent.AgentManager;
 import com.xpower.xhomeconnect.agent.IAgentManager;
-import com.xpower.message.model.SocketDTO;
+import com.xpower.message.model.OutletDTO;
 import com.xpower.xhomeconnect.websocket.WebSocketManager;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.websockets.WebSocket;
@@ -27,7 +26,7 @@ public class HomeController implements IWebSocketCallback {
     WebSocketManager mWebSocketManager;
 //    IApiClientManager mApiClientManager; - TODO class not defined
 
-    List<SocketDTO> sockets = new ArrayList<>();
+    List<OutletDTO> sockets = new ArrayList<>();
 
     /**
      * Initialises the HTTP server - which controls the end point for the websocket
@@ -63,11 +62,11 @@ public class HomeController implements IWebSocketCallback {
             }
         }, "shutdownHook"));
 
-        sockets.add(new SocketDTO(1, 1, "LAPTOP", "LAPTOP"));
-        sockets.add(new SocketDTO(1, 2, "NON", "NON"));
-        sockets.add(new SocketDTO(1, 3, "COFFEE_MACHINE", "COFFEE_MACHINE"));
-        sockets.add(new SocketDTO(2, 3, "", "NON"));
-        sockets.add(new SocketDTO(2, 4, "", "LAPTOP"));
+        sockets.add(new OutletDTO(1, 1, "LAPTOP", "LAPTOP"));
+        sockets.add(new OutletDTO(1, 2, "NON", "NON"));
+        sockets.add(new OutletDTO(1, 3, "COFFEE_MACHINE", "COFFEE_MACHINE"));
+        sockets.add(new OutletDTO(2, 3, "", "NON"));
+        sockets.add(new OutletDTO(2, 4, "", "LAPTOP"));
         try {
             server.start();
         } catch (IOException e) {
@@ -105,11 +104,11 @@ public class HomeController implements IWebSocketCallback {
      * @since 11/20/19
      */
     @Override
-    public void registerSocket(SocketDTO socketDTO) {
-        for (SocketDTO sock: sockets) {
-            if (socketDTO.getAgentId() == sock.getAgentId() && socketDTO.getId() == sock.getId()){
-                sock.setApplianceType(socketDTO.getApplianceType());
-                sock.setName(socketDTO.getName());
+    public void registerSocket(OutletDTO outletDTO) {
+        for (OutletDTO sock: sockets) {
+            if (outletDTO.getAgentId() == sock.getAgentId() && outletDTO.getId() == sock.getId()){
+                sock.setApplianceType(outletDTO.getApplianceType());
+                sock.setName(outletDTO.getName());
             }
         }
 //                mAgentManager.updateSocket(socketDTO);

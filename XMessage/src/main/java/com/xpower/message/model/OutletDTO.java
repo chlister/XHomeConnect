@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Socket DTO to be sent over HTTP connection
  */
-public class SocketDTO {
+public class OutletDTO {
     private int id, agentId;
     private String name, applianceType;
 
@@ -24,7 +24,7 @@ public class SocketDTO {
      * @status Under Development
      * @since 11/20/19
      */
-    public SocketDTO(int id, int agentId, String name, String applianceType) {
+    public OutletDTO(int id, int agentId, String name, String applianceType) {
         this.id = id;
         this.agentId = agentId;
         this.name = name;
@@ -37,7 +37,7 @@ public class SocketDTO {
      * @status Under Development
      * @since 11/20/19
      */
-    public SocketDTO() {
+    public OutletDTO() {
     }
 
     /**
@@ -46,8 +46,8 @@ public class SocketDTO {
      * @status Under Development
      * @since 11/20/19
      */
-    public static SocketDTO deserialize(LinkedTreeMap tree) {
-        SocketDTO dto = new SocketDTO();
+    public static OutletDTO deserialize(LinkedTreeMap tree) {
+        OutletDTO dto = new OutletDTO();
         dto.id = (int) (double) tree.get("id");
         dto.agentId = (int) (double) tree.get("agentId");
         dto.name = String.valueOf(tree.get("name"));
@@ -62,8 +62,8 @@ public class SocketDTO {
      * @status Under Development
      * @since 11/20/19
      */
-    public static List<SocketDTO> deserialize(ArrayList<LinkedTreeMap> list) {
-        List<SocketDTO> dto = new ArrayList<>();
+    public static List<OutletDTO> deserialize(ArrayList<LinkedTreeMap> list) {
+        List<OutletDTO> dto = new ArrayList<>();
         for (LinkedTreeMap treeMap : list) {
             dto.add(deserialize(treeMap));
         }
