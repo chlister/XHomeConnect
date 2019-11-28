@@ -16,6 +16,7 @@ import org.glassfish.grizzly.websockets.WebSocketAddOn;
 import org.glassfish.grizzly.websockets.WebSocketEngine;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,6 +27,7 @@ public class HomeController implements IWebSocketCallback {
     WebSocketManager mWebSocketManager;
 //    IApiClientManager mApiClientManager; - TODO class not defined
 
+    List<SocketDTO> sockets = new ArrayList<>();
 
     /**
      * Initialises the HTTP server - which controls the end point for the websocket
@@ -61,7 +63,11 @@ public class HomeController implements IWebSocketCallback {
             }
         }, "shutdownHook"));
 
-
+        sockets.add(new SocketDTO(1, 1, "LAPTOP", "LAPTOP"));
+        sockets.add(new SocketDTO(1, 2, "NON", "NON"));
+        sockets.add(new SocketDTO(1, 3, "COFFEE_MACHINE", "COFFEE_MACHINE"));
+        sockets.add(new SocketDTO(2, 3, "", "NON"));
+        sockets.add(new SocketDTO(2, 4, "", "LAPTOP"));
         try {
             server.start();
         } catch (IOException e) {
@@ -87,31 +93,9 @@ public class HomeController implements IWebSocketCallback {
      */
     @Override
     public void getSockets(WebSocket socket) {
-         mAgentManager = new AgentManager(new IAgentGetSocketsCallback() {
-             @Override
-             public void getSockets(List<SocketDTO> sockets, RespondCodes code) {
-                 sockets.add(new SocketDTO(1, 1, "", "Computer"));
-                 sockets.add(new SocketDTO(1, 2, "", "Vibrator"));
-                 sockets.add(new SocketDTO(1, 3, "", "KaffeMaskine"));
-                 sockets.add(new SocketDTO(2, 3, "", "Kedel"));
-                mWebSocketManager.returnSockets(socket, code, sockets);
-             }
-         });
-         mAgentManager.getSockets();
+        // For testing only TODO return via agentmanager
+        mWebSocketManager.returnSockets(socket, RespondCodes.OK, sockets);
     }
-
-//    /**
-//     * Used to search local net for units matching the Netio agent signature.
-//     *
-//     * @author Marc R. K.
-//     * @version 0.1
-//     * @status Defined
-//     * @since 11/20/19
-//     */
-//    @Override
-//    public void detectLocalAgents() {
-//        mAgentManager.scanNetwork();
-//    }
 
     /**
      * Used to register a specific socket.
@@ -122,7 +106,13 @@ public class HomeController implements IWebSocketCallback {
      */
     @Override
     public void registerSocket(SocketDTO socketDTO) {
-        mAgentManager.updateSocket(socketDTO);
+        for (SocketDTO sock: sockets) {
+            if (socketDTO.getAgentId() == sock.getAgentId() && socketDTO.getId() == sock.getId()){
+                sock.setApplianceType(socketDTO.getApplianceType());
+                sock.setName(socketDTO.getName());
+            }
+        }
+//                mAgentManager.updateSocket(socketDTO);
     }
 }
 
