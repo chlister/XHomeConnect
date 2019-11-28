@@ -38,7 +38,7 @@ public class HomeController implements IWebSocketCallback {
     public void init() {
         // Create a server, first param docroot (only used if .html files are in the project) therefore using port which isn't HTTP
         HttpServer server =
-                HttpServer.createSimpleServer("src/main/java/com/xpower/xhomeconnect/websocket", 20860);
+                HttpServer.createSimpleServer("src/main/java/com/xpower/xhomeconnect/websocket", 80);
         WebSocketAddOn addon = new WebSocketAddOn();
 
         server.getListeners().forEach(x -> {

@@ -25,20 +25,20 @@ public class WebSocketManagerTest {
         // Constructing variables
         sockets = new ArrayList<>();
         sockets.add(new SocketDTO(1, 1, "socket", "Fridge"));
-        messageGetSockets = new Message(RespondCodes.OK, MethodCode.GET_SOCKETS, null);
-        messageRegisterSocket = new Message(RespondCodes.OK, MethodCode.REGISTER, sockets.get(0));
+        messageGetSockets = new Message(null, MethodCode.GET_SOCKETS, null);
+        messageRegisterSocket = new Message(null, MethodCode.REGISTER, sockets.get(0));
 
 
         // Checks if the method reaches this part of the code
         WebSocketManager manager = new WebSocketManager(new IWebSocketCallback() {
             @Override
             public void getSockets(WebSocket socket) {
-                Assert.assertTrue(false);
+                Assert.assertTrue(true);
             }
 
             @Override
             public void registerSocket(SocketDTO socketDTO) {
-                Assert.assertTrue(false);
+                Assert.assertTrue(true);
             }
         });
 
