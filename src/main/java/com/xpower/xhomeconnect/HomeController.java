@@ -90,6 +90,10 @@ public class HomeController implements IWebSocketCallback {
          mAgentManager = new AgentManager(new IAgentGetSocketsCallback() {
              @Override
              public void getSockets(List<SocketDTO> sockets, RespondCodes code) {
+                 sockets.add(new SocketDTO(1, 1, "", "Computer"));
+                 sockets.add(new SocketDTO(1, 2, "", "Vibrator"));
+                 sockets.add(new SocketDTO(1, 3, "", "KaffeMaskine"));
+                 sockets.add(new SocketDTO(2, 3, "", "Kedel"));
                 mWebSocketManager.returnSockets(socket, code, sockets);
              }
          });

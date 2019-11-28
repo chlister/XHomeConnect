@@ -75,6 +75,12 @@ public class WebSocketManager extends WebSocketApplication {
 
     }
 
+    @Override
+    protected boolean onError(WebSocket webSocket, Throwable t) {
+        System.out.println("Socket encountered an error: " + t.getMessage());
+        return super.onError(webSocket, t);
+    }
+
     /**
      * @author Marc R. K.
      * @version 0.3
