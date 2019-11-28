@@ -19,32 +19,32 @@ public class Agent {
         mId = pojo.getAgent().getSerialNumber();
         mOutlets = new ArrayList<>();
         for (Output output : pojo.getOutputs()) {
-            mOutlets.add(new Outlet(output));
+            mOutlets.add(new Outlet(output, ""));
         }
         mIp = ip;
     }
 
-    public List<Outlet> getmOutlets() {
+    public List<Outlet> getOutlets() {
         return mOutlets;
     }
 
-    public void setmOutlets(List<Outlet> mOutlets) {
+    public void setOutlets(List<Outlet> mOutlets) {
         this.mOutlets = mOutlets;
     }
 
-    public String getmIp() {
+    public String getIp() {
         return mIp;
     }
 
-    public void setmIp(String mIp) {
+    public void setIp(String mIp) {
         this.mIp = mIp;
     }
 
-    public String getmId() {
+    public String getId() {
         return mId;
     }
 
-    public void setmId(String mId) {
+    public void setId(String mId) {
         this.mId = mId;
     }
 }

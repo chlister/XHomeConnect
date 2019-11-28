@@ -41,22 +41,23 @@ public class HomeController implements IWebSocketCallback, IAgentCallback  {
      * @since 11/20/19
      */
     public void init() {
-        // Create a server, first param docroot (only used if .html files are in the project) therefore using port which isn't HTTP
+
+        // Create a simple webserver. root of server is the first param - HTML files should be put here.
         HttpServer server =
                 HttpServer.createSimpleServer("src/main/java/com/xpower/xhomeconnect/websocket", 80);
-        WebSocketAddOn addon = new WebSocketAddOn();
 
+        // Adding ws: functionality to the webserver
+        WebSocketAddOn addon = new WebSocketAddOn();
         server.getListeners().forEach(x -> {
             x.registerAddOn(addon);
         });
-
-        // Defining which class handles the websocket part
+        // This is the class responsible for handling WebSocket events.
         mWebSocketManager = new WebSocketManager(this);
 
-        // ws://localhost:20860/x/home - url for the websocket.
+        // ws://localhost:80/x/home - url for the websocket.
         WebSocketEngine.getEngine().register("/x", "/home", mWebSocketManager);
 
-        // register shutdown hook
+        // When application closes - we close the server gracefully
         Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
             @Override
             public void run() {
@@ -66,11 +67,6 @@ public class HomeController implements IWebSocketCallback, IAgentCallback  {
             }
         }, "shutdownHook"));
 
-//        outlets.add(new OutletDTO(1, 1, "LAPTOP", "LAPTOP"));
-//        outlets.add(new OutletDTO(1, 2, "NON", "NON"));
-//        outlets.add(new OutletDTO(1, 3, "COFFEE_MACHINE", "COFFEE_MACHINE"));
-//        outlets.add(new OutletDTO(2, 3, "", "NON"));
-//        outlets.add(new OutletDTO(2, 4, "", "LAPTOP"));
         try {
             server.start();
         } catch (IOException e) {
