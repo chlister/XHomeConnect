@@ -5,6 +5,9 @@ import java.util.List;
 import javax.annotation.Generated;
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Auto generated class by JSON2pojo
+ */
 @Generated("net.hexar.json2pojo")
 @SuppressWarnings("unused")
 public class AgentPOJO {
