@@ -1,8 +1,8 @@
 package com.xpower.xhomeconnect;
 
 import com.xpower.message.RespondCodes;
-import com.xpower.message.model.SocketDTO;
+import com.xpower.message.model.OutletDTO;
 
 public interface IAgentChangeStateCallBack {
-    void changeState(SocketDTO socketDTO, RespondCodes respondCodes);
+    void changeState(OutletDTO outletDTO, RespondCodes respondCodes);
 }

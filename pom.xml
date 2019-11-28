@@ -6,11 +6,11 @@
 
     <groupId>com.xpower</groupId>
     <artifactId>XHomeConnect</artifactId>
-    <version>0.0.0.17</version>
-<!--    <packaging>jar</packaging>-->
+    <version>0.0.0.18</version>
+    <!--    <packaging>jar</packaging>-->
 
     <dependencies>
-<!--        Grizzly modules-->
+        <!--        Grizzly modules-->
         <dependency>
             <groupId>org.glassfish.grizzly</groupId>
             <artifactId>grizzly-websockets</artifactId>
@@ -33,7 +33,7 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
-<!--        Javax modules-->
+        <!--        Javax modules-->
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
@@ -63,10 +63,10 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.5</version>
+                <version>3.8.1</version>
                 <configuration>
-                    <release>8</release>
                     <encoding>UTF-8</encoding>
+                    <release>11</release>
                 </configuration>
             </plugin>
             <plugin>

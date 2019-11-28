@@ -22,11 +22,11 @@ public class WebSocketManagerTest {
     @Test
     public void onMessage() {
         // Constructing variables
-        sockets = new ArrayList<>();
-        sockets.add(new SocketDTO(1, 1, "socket", "Fridge", false));
-        messageGetSockets = new Message(MethodCode.GET_SOCKETS, null);
-        messageRegisterSocket = new Message(MethodCode.REGISTER, sockets.get(0));
-        messageChangeSocketState = new Message(MethodCode.CHANGE_SOCKET_STATE, sockets.get(0));
+        outlets = new ArrayList<>();
+        outlets.add(new OutletDTO(1, 1, "socket", "Fridge", false));
+        messageGetSockets = new Message(null, MethodCode.GET_SOCKETS, null);
+        messageRegisterSocket = new Message(null,MethodCode.REGISTER, outlets.get(0));
+        messageChangeSocketState = new Message(null,MethodCode.CHANGE_SOCKET_STATE, outlets.get(0));
 
 
         // Checks if the method reaches this part of the code
@@ -44,10 +44,10 @@ public class WebSocketManagerTest {
             @Override
             public void changeState(OutletDTO outletDTO) {
                 for (OutletDTO outlet: outlets) {
-                    if (socket.getAgentId() == socketDTO.getAgentId() && socket.getId() == socketDTO.getId()){
-                        System.out.println("Socket state used to be: " + socket.getState());
-                        socket.setState(socketDTO.getState());
-                        System.out.println("Socket state is now: " + socket.getState());
+                    if (outlet.getAgentId() == outletDTO.getAgentId() && outlet.getId() == outletDTO.getId()){
+                        System.out.println("Socket state used to be: " + outlet.getState());
+                        outlet.setState(outletDTO.getState());
+                        System.out.println("Socket state is now: " + outlet.getState());
                     }
                 }
                 Assert.assertTrue(true);

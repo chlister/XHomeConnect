@@ -8,19 +8,17 @@ package com.xpower.xhomeconnect.agent;
 
 import com.xpower.message.RespondCodes;
 import com.xpower.xhomeconnect.IAgentCallback;
-import com.xpower.xhomeconnect.IAgentChangeStateCallBack;
 import com.xpower.xhomeconnect.IAgentGetSocketsCallback;
 import com.xpower.message.model.OutletDTO;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class AgentManager implements IAgentManager {
 
     IAgentGetSocketsCallback mAgentGetSocketsCallback;
     IAgentCallback callback;
-    List<SocketDTO> mHomeSockets;
+    List<OutletDTO> mHomeSockets;
 
 
     /**
@@ -64,12 +62,12 @@ public class AgentManager implements IAgentManager {
     }
 
     @Override
-    public void changeState(SocketDTO socketDTO) {
+    public void changeState(OutletDTO outletDTO) {
         // TODO: find the socket
-        for (SocketDTO socket: mHomeSockets) {
-            if (socket.getAgentId() == socketDTO.getAgentId() && socket.getId() == socketDTO.getId()){
+        for (OutletDTO socket: mHomeSockets) {
+            if (socket.getAgentId() == outletDTO.getAgentId() && socket.getId() == outletDTO.getId()){
                 System.out.println("Socket state used to be: " + socket.getState());
-                socket.setState(socketDTO.getState());
+                socket.setState(outletDTO.getState());
                 System.out.println("Socket state is now: " + socket.getState());
             }
         }
@@ -83,19 +81,19 @@ public class AgentManager implements IAgentManager {
     @Override
     public List<String> scanNetwork() {
         mHomeSockets.add(
-                new SocketDTO(1, 1, "", "", false)
+                new OutletDTO(1, 1, "", "", false)
         );
         mHomeSockets.add(
-                new SocketDTO(2, 1, "", "", false)
+                new OutletDTO(2, 1, "", "", false)
         );
         mHomeSockets.add(
-                new SocketDTO(1, 2, "", "", false)
+                new OutletDTO(1, 2, "", "", false)
         );
         mHomeSockets.add(
-                new SocketDTO(2, 2, "", "", false)
+                new OutletDTO(2, 2, "", "", false)
         );
         mHomeSockets.add(
-                new SocketDTO(1, 3, "", "", false)
+                new OutletDTO(1, 3, "", "", false)
         );
 
         return null;
