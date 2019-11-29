@@ -13,6 +13,6 @@ public interface IWebSocketCallback {
 
     void getSockets(WebSocket socket);
 
-    void registerSocket(OutletDTO outletDTO);
+    void registerOutlet(OutletDTO outletDTO);
     void changeState(OutletDTO outletDTO);
 }

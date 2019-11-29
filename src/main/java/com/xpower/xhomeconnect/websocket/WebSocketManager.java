@@ -6,7 +6,6 @@
 
 package com.xpower.xhomeconnect.websocket;
 
-import com.google.gson.JsonSyntaxException;
 import com.google.gson.internal.LinkedTreeMap;
 import com.xpower.message.Message;
 import com.xpower.message.MethodCode;
@@ -17,7 +16,6 @@ import org.glassfish.grizzly.websockets.DataFrame;
 import org.glassfish.grizzly.websockets.WebSocket;
 import org.glassfish.grizzly.websockets.WebSocketApplication;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class WebSocketManager extends WebSocketApplication {
@@ -66,7 +64,7 @@ public class WebSocketManager extends WebSocketApplication {
             message = new Message(json);
             switch (message.getMethodCode()) {
                 case REGISTER:
-                    callback.registerSocket(OutletDTO.deserialize((LinkedTreeMap) message.getObj()));
+                    callback.registerOutlet(OutletDTO.deserialize((LinkedTreeMap) message.getObj()));
                     break;
                 case GET_SOCKETS:
                     callback.getSockets(socket);
@@ -78,7 +76,7 @@ public class WebSocketManager extends WebSocketApplication {
 //                callback.detectLocalAgents();
 //                break;
                 default:
-                    // TODO: error message to the socket
+                    socket.send("The server couldn't read the message");
                     System.out.println("default switch case");
                     break;
             }

@@ -18,7 +18,7 @@ public class AgentManager implements IAgentManager {
 
     IAgentGetSocketsCallback mAgentGetSocketsCallback;
     IAgentCallback callback;
-    List<OutletDTO> mHomeSockets;
+    List<OutletDTO> mOutlets;
 
 
     /**
@@ -32,7 +32,7 @@ public class AgentManager implements IAgentManager {
     }
 
     public AgentManager(IAgentCallback callback) {
-        mHomeSockets = new ArrayList<>();
+        mOutlets = new ArrayList<>();
         this.scanNetwork();
         this.callback = callback;
 
@@ -45,9 +45,8 @@ public class AgentManager implements IAgentManager {
      * @since 11/20/19
      */
     @Override
-    public void getSockets() {
-        List<OutletDTO> outletDTOS = new ArrayList<>();
-        mAgentGetSocketsCallback.getSockets(outletDTOS, RespondCodes.OK);
+    public List<OutletDTO> getSockets() {
+        return mOutlets;
     }
 
     /**
@@ -58,17 +57,21 @@ public class AgentManager implements IAgentManager {
      */
     @Override
     public void updateSocket(OutletDTO outletDTO) {
-
+        for (OutletDTO dto : mOutlets) {
+            if (outletDTO.getAgentId() == dto.getAgentId() && outletDTO.getId() == dto.getId()) {
+                dto.setApplianceType(outletDTO.getApplianceType());
+                dto.setName(outletDTO.getName());
+            }
+        }
     }
 
     @Override
     public void changeState(OutletDTO outletDTO) {
-        // TODO: find the socket
-        for (OutletDTO socket: mHomeSockets) {
-            if (socket.getAgentId() == outletDTO.getAgentId() && socket.getId() == outletDTO.getId()){
-                System.out.println("Socket state used to be: " + socket.getState());
-                socket.setState(outletDTO.getState());
-                System.out.println("Socket state is now: " + socket.getState());
+        for (OutletDTO outlet: mOutlets) {
+            if (outlet.getAgentId() == outletDTO.getAgentId() && outlet.getId() == outletDTO.getId()){
+                System.out.println("Socket state used to be: " + outlet.getState());
+                outlet.setState(outletDTO.getState());
+                System.out.println("Socket state is now: " + outlet.getState());
             }
         }
     }
@@ -80,19 +83,19 @@ public class AgentManager implements IAgentManager {
      */
     @Override
     public List<String> scanNetwork() {
-        mHomeSockets.add(
+        mOutlets.add(
                 new OutletDTO(1, 1, "", "", false)
         );
-        mHomeSockets.add(
+        mOutlets.add(
                 new OutletDTO(2, 1, "", "", false)
         );
-        mHomeSockets.add(
+        mOutlets.add(
                 new OutletDTO(1, 2, "", "", false)
         );
-        mHomeSockets.add(
+        mOutlets.add(
                 new OutletDTO(2, 2, "", "", false)
         );
-        mHomeSockets.add(
+        mOutlets.add(
                 new OutletDTO(1, 3, "", "", false)
         );
 

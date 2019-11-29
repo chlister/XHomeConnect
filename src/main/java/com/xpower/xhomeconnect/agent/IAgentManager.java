@@ -11,7 +11,7 @@ import com.xpower.message.model.OutletDTO;
 import java.util.List;
 
 public interface IAgentManager {
-    void getSockets();
+    List<OutletDTO> getSockets();
 //    Agent getAgent(String agent); // TODO implement when Agent class is defined
     void updateSocket(OutletDTO outletDTO);
     void changeState(OutletDTO outletDTO);

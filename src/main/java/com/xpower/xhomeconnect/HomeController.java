@@ -22,12 +22,11 @@ import java.util.List;
 /**
  * Main class of the XHomeConnect module.
  */
-public class HomeController implements IWebSocketCallback, IAgentCallback  {
+public class HomeController implements IWebSocketCallback, IAgentCallback {
     IAgentManager mAgentManager;
     WebSocketManager mWebSocketManager;
 //    IApiClientManager mApiClientManager; - TODO class not defined
 
-    List<OutletDTO> outlets = new ArrayList<>();
     public HomeController() {
         mAgentManager = new AgentManager(this);
     }
@@ -92,31 +91,34 @@ public class HomeController implements IWebSocketCallback, IAgentCallback  {
      */
     @Override
     public void getSockets(WebSocket socket) {
-        // For testing only TODO return via agentManager
-        mWebSocketManager.returnSockets(socket, RespondCodes.OK, outlets);
+        List<OutletDTO> outlets = mAgentManager.getSockets();
+        if (outlets.isEmpty())
+            mWebSocketManager.returnSockets(socket, RespondCodes.NOT_FOUND, outlets);
+        else
+            mWebSocketManager.returnSockets(socket, RespondCodes.OK, outlets);
     }
 
     /**
      * Used to register a specific socket.
+     *
      * @author Marc R. K.
      * @version 0.1
      * @status Under Development
      * @since 11/20/19
      */
     @Override
-    public void registerSocket(OutletDTO outletDTO) {
-        for (OutletDTO dto: outlets) {
-            if (outletDTO.getAgentId() == dto.getAgentId() && outletDTO.getId() == dto.getId()){
-                dto.setApplianceType(outletDTO.getApplianceType());
-                dto.setName(outletDTO.getName());
-            }
-        }
-//                mAgentManager.updateSocket(socketDTO);
+    public void registerOutlet(OutletDTO outletDTO) {
+        mAgentManager.updateSocket(outletDTO);
     }
 
     @Override
     public void changeState(OutletDTO outletDTO) {
         mAgentManager.changeState(outletDTO);
+
+    }
+
+    @Override
+    public void getSockets(List<OutletDTO> sockets, RespondCodes respondCodes) {
 
     }
 }

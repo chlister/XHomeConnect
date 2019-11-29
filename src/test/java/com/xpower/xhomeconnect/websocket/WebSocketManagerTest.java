@@ -19,11 +19,15 @@ public class WebSocketManagerTest {
     private Message messageChangeSocketState;
     private Message messageDetectLocalAgents;
 
+    /**
+     * Testing of the onMessage functionality
+     * onMessage expects certain methodCodes - these should be tested here.
+     */
     @Test
     public void onMessage() {
         // Constructing variables
         outlets = new ArrayList<>();
-        outlets.add(new OutletDTO(1, 1, "socket", "Fridge", false));
+        outlets.add(new OutletDTO(1, 1, "socket", "Fridge", true));
         messageGetSockets = new Message(null, MethodCode.GET_SOCKETS, null);
         messageRegisterSocket = new Message(null,MethodCode.REGISTER, outlets.get(0));
         messageChangeSocketState = new Message(null,MethodCode.CHANGE_SOCKET_STATE, outlets.get(0));
@@ -37,20 +41,22 @@ public class WebSocketManagerTest {
             }
 
             @Override
-            public void registerSocket(OutletDTO outletDTO) {
+            public void registerOutlet(OutletDTO outletDTO) {
                 Assert.assertTrue(true);
             }
 
             @Override
             public void changeState(OutletDTO outletDTO) {
+                boolean newState = true;
                 for (OutletDTO outlet: outlets) {
                     if (outlet.getAgentId() == outletDTO.getAgentId() && outlet.getId() == outletDTO.getId()){
                         System.out.println("Socket state used to be: " + outlet.getState());
                         outlet.setState(outletDTO.getState());
                         System.out.println("Socket state is now: " + outlet.getState());
+                        newState = outlet.getState();
                     }
                 }
-                Assert.assertTrue(true);
+                Assert.assertTrue((outletDTO.getState() == newState));
             }
         });
 
