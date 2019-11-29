@@ -21,7 +21,6 @@ public class OutletDTO {
 
     /**
      * @author Marc R. K.
-     * @version 0.2
      * @status Under Development
      * @since 11/20/19
      */
@@ -35,8 +34,7 @@ public class OutletDTO {
 
     /**
      * @author Marc R. K.
-     * @version 0.2
-     * @status Under Development
+     * @status Done
      * @since 11/20/19
      */
     public OutletDTO() {
@@ -44,7 +42,6 @@ public class OutletDTO {
 
     /**
      * @author Marc R. K.
-     * @version 0.2
      * @status Under Development
      * @since 11/20/19
      */
@@ -52,6 +49,7 @@ public class OutletDTO {
         OutletDTO dto = new OutletDTO();
         dto.id = (int) (double) tree.get("id");
         dto.agentId = (int) (double) tree.get("agentId");
+        dto.state = (boolean) tree.get("state");
         dto.name = String.valueOf(tree.get("name"));
         dto.applianceType = (String) tree.get("applianceType");
 
@@ -60,7 +58,6 @@ public class OutletDTO {
 
     /**
      * @author Marc R. K.
-     * @version 0.2
      * @status Under Development
      * @since 11/20/19
      */

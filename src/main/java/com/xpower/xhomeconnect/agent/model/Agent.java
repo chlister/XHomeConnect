@@ -13,10 +13,11 @@ import java.util.List;
 
 public class Agent {
     private List<Outlet> mOutlets;
-    private String mIp, mId;
+    private String mIp;
+    int mId;
 
     public Agent(AgentPOJO pojo, String ip){
-        mId = pojo.getAgent().getSerialNumber();
+        mId = pojo.getAgent().getOemID().intValue();
         mOutlets = new ArrayList<>();
         for (Output output : pojo.getOutputs()) {
             mOutlets.add(new Outlet(output, ""));
@@ -40,11 +41,11 @@ public class Agent {
         this.mIp = mIp;
     }
 
-    public String getId() {
+    public int getId() {
         return mId;
     }
 
-    public void setId(String mId) {
+    public void setId(int mId) {
         this.mId = mId;
     }
 }

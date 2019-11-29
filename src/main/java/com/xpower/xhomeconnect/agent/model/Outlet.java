@@ -1,15 +1,14 @@
 package com.xpower.xhomeconnect.agent.model;
 
-import com.google.gson.internal.$Gson$Types;
 import com.xpower.xhomeconnect.agent.agentdto.Output;
 
 public class Outlet {
-    private long mId;
+    private int mId;
     private short mState, mCurrent, mLoad;
     private String mName, mType;
 
     public Outlet(Output pojo, String type) {
-        mId = pojo.getID();
+        mId = pojo.getID().intValue();
         mState = pojo.getState().shortValue();
         mCurrent = pojo.getCurrent().shortValue();
         mLoad = pojo.getLoad().shortValue();
@@ -17,11 +16,11 @@ public class Outlet {
         mType = type.equals("") ? "NON" : type;               // TODO: Type comes from agent not POJO
     }
 
-    public long getId() {
+    public int getId() {
         return mId;
     }
 
-    public void setId(long mId) {
+    public void setId(int mId) {
         this.mId = mId;
     }
 

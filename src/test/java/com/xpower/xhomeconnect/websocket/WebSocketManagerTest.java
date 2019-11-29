@@ -27,7 +27,7 @@ public class WebSocketManagerTest {
     public void onMessage() {
         // Constructing variables
         outlets = new ArrayList<>();
-        outlets.add(new OutletDTO(1, 1, "socket", "Fridge", true));
+        outlets.add(new OutletDTO(1, 1, "socket", "COFFEE_MACHINE", true));
         messageGetSockets = new Message(null, MethodCode.GET_SOCKETS, null);
         messageRegisterSocket = new Message(null,MethodCode.REGISTER, outlets.get(0));
         messageChangeSocketState = new Message(null,MethodCode.CHANGE_SOCKET_STATE, outlets.get(0));

@@ -90,7 +90,7 @@ public class HomeController implements IWebSocketCallback, IAgentCallback {
      */
     @Override
     public void getSockets(WebSocket socket) {
-        List<OutletDTO> outlets = mAgentManager.getSockets();
+        List<OutletDTO> outlets = mAgentManager.getOutlets();
         if (outlets.isEmpty())
             mWebSocketManager.returnSockets(socket, RespondCodes.NOT_FOUND, outlets);
         else

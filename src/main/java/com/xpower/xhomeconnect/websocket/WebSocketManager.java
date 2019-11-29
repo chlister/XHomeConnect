@@ -75,7 +75,6 @@ public class WebSocketManager extends WebSocketApplication {
                         socket.send(new Message(RespondCodes.OK, MethodCode.REGISTER, null).encode());
                     } else
                         socket.send(new Message(RespondCodes.NOT_FOUND, MethodCode.REGISTER, null).encode());
-
                     break;
                 case GET_SOCKETS:
                     callback.getSockets(socket);
@@ -83,9 +82,6 @@ public class WebSocketManager extends WebSocketApplication {
                 case CHANGE_SOCKET_STATE:
                     callback.changeState(OutletDTO.deserialize((LinkedTreeMap) message.getObj()));
                     break;
-//            case DETECT_AGENTS:
-//                callback.detectLocalAgents();
-//                break;
                 default:
                     socket.send("The server couldn't read the message");
                     System.out.println("default switch case");

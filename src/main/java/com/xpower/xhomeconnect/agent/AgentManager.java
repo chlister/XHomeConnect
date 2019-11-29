@@ -10,15 +10,22 @@ import com.xpower.message.RespondCodes;
 import com.xpower.xhomeconnect.IAgentCallback;
 import com.xpower.xhomeconnect.IAgentGetSocketsCallback;
 import com.xpower.message.model.OutletDTO;
+import com.xpower.xhomeconnect.agent.model.Agent;
+import com.xpower.xhomeconnect.agent.model.Outlet;
+import com.xpower.xhomeconnect.agent.model.RegisterOutlet;
+import okhttp3.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AgentManager implements IAgentManager {
+public class AgentManager implements IAgentManager, AgentRunner.IAgentRunnerCallback {
 
     IAgentGetSocketsCallback mAgentGetSocketsCallback;
     IAgentCallback callback;
-    List<OutletDTO> mOutlets;
+    List<Agent> mAgents;
+    List<RegisterOutlet> registerOutlets;
+    private AgentRunner mAgentRunner;
 
 
     /**
@@ -32,10 +39,12 @@ public class AgentManager implements IAgentManager {
     }
 
     public AgentManager(IAgentCallback callback) {
-        mOutlets = new ArrayList<>();
-        this.scanNetwork();
+        mAgents = new ArrayList<>();
+        mAgentRunner = new AgentRunner(this.scanNetwork(), this);
+        Thread runner = new Thread(mAgentRunner);
+        runner.start();
         this.callback = callback;
-
+        registerOutlets = new ArrayList<>();
     }
 
     /**
@@ -45,8 +54,26 @@ public class AgentManager implements IAgentManager {
      * @since 11/20/19
      */
     @Override
-    public List<OutletDTO> getSockets() {
-        return mOutlets;
+    public List<OutletDTO> getOutlets() {
+        List<OutletDTO> outlets = new ArrayList<>();
+        for (Agent agent : mAgents) {
+            for (Outlet outlet : agent.getOutlets()) {
+                OutletDTO o = new OutletDTO(
+                        outlet.getId(),
+                        agent.getId(),
+                        outlet.getName(),
+                        "",
+                        outlet.getState() > 0);
+                for (RegisterOutlet ro : registerOutlets) {
+                    if (ro.getmAgentId() == o.getAgentId() && ro.getmId() == o.getId()) {
+                        o.setApplianceType(ro.getmType());
+                        o.setName(ro.getmName());
+                    }
+                }
+                outlets.add(o);
+            }
+        }
+        return outlets;
     }
 
     /**
@@ -57,31 +84,56 @@ public class AgentManager implements IAgentManager {
      */
     @Override
     public void updateOutlet(OutletDTO outletDTO) {
-        RespondCodes response = RespondCodes.NOT_FOUND;
-        for (OutletDTO dto : mOutlets) {
-            if (outletDTO.getAgentId() == dto.getAgentId() && outletDTO.getId() == dto.getId()) {
-                response = RespondCodes.OK;
-                dto.setApplianceType(outletDTO.getApplianceType());
-                dto.setName(outletDTO.getName());
+        RespondCodes response = RespondCodes.OK;
+        for (RegisterOutlet outlet : registerOutlets) {
+            if (outletDTO.getAgentId() == outlet.getmAgentId() && outletDTO.getId() == outlet.getmId()) {
+                outlet.setmType(outletDTO.getApplianceType());
+                outlet.setmName(outletDTO.getName());
+                callback.outletChangedEvent(getOutlets(), response);
+                return;
             }
         }
-        callback.outletChangedEvent(mOutlets, response);
+        // if no register of outlet found
+        registerOutlets.add(new RegisterOutlet(outletDTO.getId(),
+                outletDTO.getName(),
+                outletDTO.getApplianceType(),
+                outletDTO.getAgentId()));
+
+        callback.outletChangedEvent(getOutlets(), response);
     }
 
     @Override
     public void changeState(OutletDTO outletDTO) {
-        RespondCodes response = RespondCodes.NOT_FOUND;
-        for (OutletDTO outlet: mOutlets) {
-            if (outlet.getAgentId() == outletDTO.getAgentId() && outlet.getId() == outletDTO.getId()){
-                response = RespondCodes.OK;
-                System.out.println("Socket state used to be: " + outlet.getState());
-                outlet.setState(outletDTO.getState());
-                System.out.println("Socket state is now: " + outlet.getState());
+        for (Agent agent : mAgents) {
+            if (agent.getId() == outletDTO.getAgentId()) {
+                for (Outlet outlet : agent.getOutlets()) {
+                    if (outlet.getId() == outletDTO.getId()) {
+                        OkHttpClient client = new OkHttpClient();
+                        int state = outletDTO.getState() ? 1 : 0;
+                        Request request = new Request.Builder()
+                                .url(agent.getIp() + "/netio.json")
+                                .post(RequestBody.create(MediaType.parse("text/x-markdown; charset=utf-8"),
+                                        "{\"Outputs\":[{\"ID\":"
+                                                + outletDTO.getId() + ",\"State\":"
+                                                + state + ",\"Action\":6}]}"))
+                                .build();
+                        Call call = client.newCall(request);
+                        try {
+                            Response response = call.execute();
+                            if (response.code() == 200){
+                                callback.outletChangedEvent(getOutlets(), RespondCodes.OK);
+                            }
+                            else
+                                System.out.println("State change failed");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
             }
         }
-        callback.outletChangedEvent(mOutlets, response);
-
     }
+
     /**
      * @author Marc R. K.
      * @version 0.1
@@ -91,27 +143,71 @@ public class AgentManager implements IAgentManager {
     @Override
     public List<String> scanNetwork() {
         // TODO returns IP address' of Netio agents
-        String ip = "192.168.1.90";
+        String ip = "http://192.168.1.90";
         List<String> ips = new ArrayList<>();
         ips.add(ip);
 
         // TODO: remove when we can get data from Netio agent
-        mOutlets.add(
-                new OutletDTO(1, 1, "", "NON", false)
-        );
-        mOutlets.add(
-                new OutletDTO(2, 1, "", "NON", false)
-        );
-        mOutlets.add(
-                new OutletDTO(1, 2, "", "NON", false)
-        );
-        mOutlets.add(
-                new OutletDTO(2, 2, "", "NON", false)
-        );
-        mOutlets.add(
-                new OutletDTO(1, 3, "", "NON", false)
-        );
+//        mOutlets.add(
+//                new OutletDTO(1, 1, "", "NON", false)
+//        );
+//        mOutlets.add(
+//                new OutletDTO(1, 2, "", "NON", false)
+//        );
+//        mOutlets.add(
+//                new OutletDTO(1, 3, "", "NON", false)
+//        );
+//        mOutlets.add(
+//                new OutletDTO(2, 2, "", "NON", false)
+//        );
+//        mOutlets.add(
+//                new OutletDTO(2, 1, "", "NON", false)
+//        );
+//        mOutlets.add(
+//                new OutletDTO(2, 3, "", "NON", false)
+//        );
+//        mOutlets.add(
+//                new OutletDTO(3, 1, "", "NON", false)
+//        );
+//        mOutlets.add(
+//                new OutletDTO(3, 2, "", "NON", false)
+//        );
+//        mOutlets.add(
+//                new OutletDTO(3, 3, "", "NON", false)
+//        );
+//        mOutlets.add(
+//                new OutletDTO(3, 4, "", "NON", false)
+//        );
+//        mOutlets.add(
+//                new OutletDTO(4, 1, "", "NON", false)
+//        );
+//        mOutlets.add(
+//                new OutletDTO(4, 2, "", "NON", false)
+//        );
+//        mOutlets.add(
+//                new OutletDTO(4, 3, "", "NON", false)
+//        );
+//        mOutlets.add(
+//                new OutletDTO(5, 1, "", "NON", false)
+//        );
+//        mOutlets.add(
+//                new OutletDTO(5, 2, "", "NON", false)
+//        );
 
         return ips;
+    }
+
+    public void netRunner(List<String> ip) {
+        Thread runner = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // TODO keep listening to the Netio agents
+            }
+        });
+    }
+
+    @Override
+    public void updateAgents(List<Agent> agents) {
+        mAgents = agents;
     }
 }

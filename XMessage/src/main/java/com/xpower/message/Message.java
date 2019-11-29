@@ -10,7 +10,6 @@ package com.xpower.message;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
-import com.xpower.message.model.OutletDTO;
 
 public class Message {
     private RespondCodes mRespondCodes;
@@ -43,7 +42,6 @@ public class Message {
 
     /**
      * @author Marc R. K.
-     * @version 0.1
      * @status Defined
      * @since 11/20/19
      */
@@ -55,7 +53,6 @@ public class Message {
 
     /**
      * @author Marc R. K.
-     * @version 0.1
      * @status Defined
      * @since 11/20/19
      */
@@ -72,32 +69,11 @@ public class Message {
 
     /**
      * @author Marc R. K.
-     * @version 0.1
      * @status Defined
      * @since 11/20/19
      */
     public String encode() {
         return new Gson().toJson(this, this.getClass());
     }
-
-//    /**
-//     * @author Marc R. K.
-//     * @version 0.1
-//     * @status Under Development
-//     * @since 11/20/19
-//     */
-//    public boolean validateObjectType(MethodCode methodCode, Object obj) {
-//        switch (methodCode) {
-//            case GET_SOCKETS:
-//            case DETECT_AGENTS:
-//                if (obj == null)
-//                    return true;
-//                break;
-//            case REGISTER:
-//                if (obj.getClass() == SocketDTO.class)
-//                    return true;
-//        }
-//        return false;
-//    }
 
 }
