@@ -69,7 +69,13 @@ public class WebSocketManager extends WebSocketApplication {
             message = new Message(json);
             switch (message.getMethodCode()) {
                 case REGISTER:
-                    callback.registerOutlet(OutletDTO.deserialize((LinkedTreeMap) message.getObj()));
+                    OutletDTO o = OutletDTO.deserialize((LinkedTreeMap) message.getObj());
+                    if (!o.getApplianceType().equals("NON")) {
+                        callback.registerOutlet(OutletDTO.deserialize((LinkedTreeMap) message.getObj()));
+                        socket.send(new Message(RespondCodes.OK, MethodCode.REGISTER, null).encode());
+                    } else
+                        socket.send(new Message(RespondCodes.NOT_FOUND, MethodCode.REGISTER, null).encode());
+
                     break;
                 case GET_SOCKETS:
                     callback.getSockets(socket);
@@ -108,7 +114,7 @@ public class WebSocketManager extends WebSocketApplication {
         webSocket.send(message.encode());
     }
 
-    public void outletChangedEvent(List<OutletDTO> outlets, RespondCodes response){
+    public void outletChangedEvent(List<OutletDTO> outlets, RespondCodes response) {
         for (WebSocket client :
                 clients) {
             returnSockets(client, response, outlets);
