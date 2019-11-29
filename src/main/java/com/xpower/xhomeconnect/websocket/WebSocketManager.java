@@ -16,13 +16,16 @@ import org.glassfish.grizzly.websockets.DataFrame;
 import org.glassfish.grizzly.websockets.WebSocket;
 import org.glassfish.grizzly.websockets.WebSocketApplication;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class WebSocketManager extends WebSocketApplication {
 
     private IWebSocketCallback callback;
+    private List<WebSocket> clients;
 
     public WebSocketManager(IWebSocketCallback callback) {
+        clients = new ArrayList<>();
         this.callback = callback;
     }
 
@@ -35,6 +38,7 @@ public class WebSocketManager extends WebSocketApplication {
     @Override
     public void onConnect(WebSocket socket) {
         System.out.println("Connected client: " + socket);
+        clients.add(socket);
     }
 
     /**
@@ -46,6 +50,7 @@ public class WebSocketManager extends WebSocketApplication {
     @Override
     public void onClose(WebSocket socket, DataFrame frame) {
         System.out.println("Closing connection: " + socket);
+        clients.remove(socket);
     }
 
     /**
@@ -98,8 +103,15 @@ public class WebSocketManager extends WebSocketApplication {
      * @status Defined
      * @since 11/20/19
      */
-    public void returnSockets(WebSocket webSocket, RespondCodes respondCodes, List<OutletDTO> sockets) {
-        Message message = new Message(respondCodes, MethodCode.GET_SOCKETS, sockets);
+    public void returnSockets(WebSocket webSocket, RespondCodes respondCodes, List<OutletDTO> outlets) {
+        Message message = new Message(respondCodes, MethodCode.GET_SOCKETS, outlets);
         webSocket.send(message.encode());
+    }
+
+    public void outletChangedEvent(List<OutletDTO> outlets, RespondCodes response){
+        for (WebSocket client :
+                clients) {
+            returnSockets(client, response, outlets);
+        }
     }
 }

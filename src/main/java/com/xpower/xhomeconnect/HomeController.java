@@ -16,7 +16,6 @@ import org.glassfish.grizzly.websockets.WebSocketAddOn;
 import org.glassfish.grizzly.websockets.WebSocketEngine;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -108,7 +107,7 @@ public class HomeController implements IWebSocketCallback, IAgentCallback {
      */
     @Override
     public void registerOutlet(OutletDTO outletDTO) {
-        mAgentManager.updateSocket(outletDTO);
+        mAgentManager.updateOutlet(outletDTO);
     }
 
     @Override
@@ -118,9 +117,11 @@ public class HomeController implements IWebSocketCallback, IAgentCallback {
     }
 
     @Override
-    public void getSockets(List<OutletDTO> sockets, RespondCodes respondCodes) {
-
+    public void outletChangedEvent(List<OutletDTO> outlets, RespondCodes response) {
+        mWebSocketManager.outletChangedEvent(outlets, response);
     }
+
+
 }
 
 

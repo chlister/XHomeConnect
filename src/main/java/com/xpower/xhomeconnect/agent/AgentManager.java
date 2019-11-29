@@ -56,24 +56,31 @@ public class AgentManager implements IAgentManager {
      * @since 11/20/19
      */
     @Override
-    public void updateSocket(OutletDTO outletDTO) {
+    public void updateOutlet(OutletDTO outletDTO) {
+        RespondCodes response = RespondCodes.NOT_FOUND;
         for (OutletDTO dto : mOutlets) {
             if (outletDTO.getAgentId() == dto.getAgentId() && outletDTO.getId() == dto.getId()) {
+                response = RespondCodes.OK;
                 dto.setApplianceType(outletDTO.getApplianceType());
                 dto.setName(outletDTO.getName());
             }
         }
+        callback.outletChangedEvent(mOutlets, response);
     }
 
     @Override
     public void changeState(OutletDTO outletDTO) {
+        RespondCodes response = RespondCodes.NOT_FOUND;
         for (OutletDTO outlet: mOutlets) {
             if (outlet.getAgentId() == outletDTO.getAgentId() && outlet.getId() == outletDTO.getId()){
+                response = RespondCodes.OK;
                 System.out.println("Socket state used to be: " + outlet.getState());
                 outlet.setState(outletDTO.getState());
                 System.out.println("Socket state is now: " + outlet.getState());
             }
         }
+        callback.outletChangedEvent(mOutlets, response);
+
     }
     /**
      * @author Marc R. K.
@@ -83,22 +90,28 @@ public class AgentManager implements IAgentManager {
      */
     @Override
     public List<String> scanNetwork() {
+        // TODO returns IP address' of Netio agents
+        String ip = "192.168.1.90";
+        List<String> ips = new ArrayList<>();
+        ips.add(ip);
+
+        // TODO: remove when we can get data from Netio agent
         mOutlets.add(
-                new OutletDTO(1, 1, "", "", false)
+                new OutletDTO(1, 1, "", "NON", false)
         );
         mOutlets.add(
-                new OutletDTO(2, 1, "", "", false)
+                new OutletDTO(2, 1, "", "NON", false)
         );
         mOutlets.add(
-                new OutletDTO(1, 2, "", "", false)
+                new OutletDTO(1, 2, "", "NON", false)
         );
         mOutlets.add(
-                new OutletDTO(2, 2, "", "", false)
+                new OutletDTO(2, 2, "", "NON", false)
         );
         mOutlets.add(
-                new OutletDTO(1, 3, "", "", false)
+                new OutletDTO(1, 3, "", "NON", false)
         );
 
-        return null;
+        return ips;
     }
 }

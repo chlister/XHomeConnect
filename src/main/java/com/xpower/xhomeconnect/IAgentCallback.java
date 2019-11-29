@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface IAgentCallback {
     void changeState(OutletDTO outletDTO);
-    void getSockets(List<OutletDTO> sockets, RespondCodes respondCodes);
 
+    void outletChangedEvent(List<OutletDTO> mOutlets, RespondCodes respond);
 }

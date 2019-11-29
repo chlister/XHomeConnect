@@ -13,7 +13,7 @@ import java.util.List;
 public interface IAgentManager {
     List<OutletDTO> getSockets();
 //    Agent getAgent(String agent); // TODO implement when Agent class is defined
-    void updateSocket(OutletDTO outletDTO);
+    void updateOutlet(OutletDTO outletDTO);
     void changeState(OutletDTO outletDTO);
     List<String> scanNetwork();
 
