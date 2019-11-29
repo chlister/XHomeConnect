@@ -6,7 +6,7 @@
 
     <groupId>com.xpower</groupId>
     <artifactId>XHomeConnect</artifactId>
-    <version>0.0.0.24</version>
+    <version>0.0.0.25</version>
     <!--    <packaging>jar</packaging>-->
 
     <dependencies>
@@ -49,6 +49,7 @@
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
             <version>3.4.2</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>

@@ -6,10 +6,12 @@
 
 package com.xpower.xhomeconnect.agent;
 
+import com.google.gson.Gson;
 import com.xpower.message.RespondCodes;
 import com.xpower.xhomeconnect.IAgentCallback;
 import com.xpower.xhomeconnect.IAgentGetSocketsCallback;
 import com.xpower.message.model.OutletDTO;
+import com.xpower.xhomeconnect.agent.agentdto.AgentPOJO;
 import com.xpower.xhomeconnect.agent.model.Agent;
 import com.xpower.xhomeconnect.agent.model.Outlet;
 import com.xpower.xhomeconnect.agent.model.RegisterOutlet;
@@ -121,6 +123,9 @@ public class AgentManager implements IAgentManager, AgentRunner.IAgentRunnerCall
                         try {
                             Response response = call.execute();
                             if (response.code() == 200){
+                                String responseJson = response.body().string();
+                                AgentPOJO pojo = new Gson().fromJson(responseJson, AgentPOJO.class);
+                                agent = new Agent(pojo, agent.getIp());
                                 callback.outletChangedEvent(getOutlets(), RespondCodes.OK);
                             }
                             else
@@ -146,68 +151,13 @@ public class AgentManager implements IAgentManager, AgentRunner.IAgentRunnerCall
         String ip = "http://192.168.1.90";
         List<String> ips = new ArrayList<>();
         ips.add(ip);
-
-        // TODO: remove when we can get data from Netio agent
-//        mOutlets.add(
-//                new OutletDTO(1, 1, "", "NON", false)
-//        );
-//        mOutlets.add(
-//                new OutletDTO(1, 2, "", "NON", false)
-//        );
-//        mOutlets.add(
-//                new OutletDTO(1, 3, "", "NON", false)
-//        );
-//        mOutlets.add(
-//                new OutletDTO(2, 2, "", "NON", false)
-//        );
-//        mOutlets.add(
-//                new OutletDTO(2, 1, "", "NON", false)
-//        );
-//        mOutlets.add(
-//                new OutletDTO(2, 3, "", "NON", false)
-//        );
-//        mOutlets.add(
-//                new OutletDTO(3, 1, "", "NON", false)
-//        );
-//        mOutlets.add(
-//                new OutletDTO(3, 2, "", "NON", false)
-//        );
-//        mOutlets.add(
-//                new OutletDTO(3, 3, "", "NON", false)
-//        );
-//        mOutlets.add(
-//                new OutletDTO(3, 4, "", "NON", false)
-//        );
-//        mOutlets.add(
-//                new OutletDTO(4, 1, "", "NON", false)
-//        );
-//        mOutlets.add(
-//                new OutletDTO(4, 2, "", "NON", false)
-//        );
-//        mOutlets.add(
-//                new OutletDTO(4, 3, "", "NON", false)
-//        );
-//        mOutlets.add(
-//                new OutletDTO(5, 1, "", "NON", false)
-//        );
-//        mOutlets.add(
-//                new OutletDTO(5, 2, "", "NON", false)
-//        );
-
         return ips;
     }
 
-    public void netRunner(List<String> ip) {
-        Thread runner = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                // TODO keep listening to the Netio agents
-            }
-        });
-    }
 
     @Override
     public void updateAgents(List<Agent> agents) {
         mAgents = agents;
+        callback.outletChangedEvent(getOutlets(), RespondCodes.OK);
     }
 }

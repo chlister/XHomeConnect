@@ -51,7 +51,7 @@ public class AgentRunner implements Runnable {
             }
             try {
                 mCallback.updateAgents(agents);
-                Thread.sleep(10000);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

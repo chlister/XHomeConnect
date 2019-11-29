@@ -111,9 +111,12 @@ public class WebSocketManager extends WebSocketApplication {
     }
 
     public void outletChangedEvent(List<OutletDTO> outlets, RespondCodes response) {
-        for (WebSocket client :
-                clients) {
-            returnSockets(client, response, outlets);
+        if (!clients.isEmpty()) {
+
+            for (WebSocket client :
+                    clients) {
+                returnSockets(client, response, outlets);
+            }
         }
     }
 }

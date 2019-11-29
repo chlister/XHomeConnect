@@ -27,7 +27,6 @@ public class HomeController implements IWebSocketCallback, IAgentCallback {
 //    IApiClientManager mApiClientManager; - TODO class not defined
 
     public HomeController() {
-        mAgentManager = new AgentManager(this);
     }
 
     /**
@@ -51,6 +50,8 @@ public class HomeController implements IWebSocketCallback, IAgentCallback {
         });
         // This is the class responsible for handling WebSocket events.
         mWebSocketManager = new WebSocketManager(this);
+        // This is responsible for handling agent events
+        mAgentManager = new AgentManager(this);
 
         // ws://localhost:80/x/home - url for the websocket.
         WebSocketEngine.getEngine().register("/x", "/home", mWebSocketManager);
