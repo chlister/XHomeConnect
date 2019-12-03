@@ -7,13 +7,18 @@ public class Outlet {
     private short mState, mCurrent, mLoad;
     private String mName, mType;
 
+    /**
+     * This constructor maps a Output pojo to a Outlet object
+     * @param pojo
+     * @param type
+     */
     public Outlet(Output pojo, String type) {
         mId = pojo.getID().intValue();
         mState = pojo.getState().shortValue();
         mCurrent = pojo.getCurrent().shortValue();
         mLoad = pojo.getLoad().shortValue();
-        mName = pojo.getName();     // TODO: Name comes from agent not POJO
-        mType = type.equals("") ? "NON" : type;               // TODO: Type comes from agent not POJO
+        mName = pojo.getName();
+        mType = type.equals("") ? "NON" : type;
     }
 
     public int getId() {

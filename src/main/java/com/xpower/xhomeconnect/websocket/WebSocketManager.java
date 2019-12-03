@@ -31,7 +31,6 @@ public class WebSocketManager extends WebSocketApplication {
 
     /**
      * @author Marc R. K.
-     * @version 0.2
      * @status Under Development
      * @since 11/20/19
      */
@@ -43,7 +42,6 @@ public class WebSocketManager extends WebSocketApplication {
 
     /**
      * @author Marc R. K.
-     * @version 0.2
      * @status Under Development
      * @since 11/20/19
      */
@@ -57,7 +55,6 @@ public class WebSocketManager extends WebSocketApplication {
      * The onMessage event handles a collection of commands.
      *
      * @author Marc R. K.
-     * @version 0.3
      * @status Under Development
      * @since 11/20/19
      */
@@ -101,7 +98,6 @@ public class WebSocketManager extends WebSocketApplication {
 
     /**
      * @author Marc R. K.
-     * @version 0.3
      * @status Defined
      * @since 11/20/19
      */

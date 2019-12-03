@@ -11,8 +11,9 @@ import org.glassfish.grizzly.websockets.WebSocket;
 
 public interface IWebSocketCallback {
 
+    void changeState(OutletDTO outletDTO);
+
     void getSockets(WebSocket socket);
 
     void registerOutlet(OutletDTO outletDTO);
-    void changeState(OutletDTO outletDTO);
 }

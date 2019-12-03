@@ -33,7 +33,6 @@ public class HomeController implements IWebSocketCallback, IAgentCallback {
      * Initialises the HTTP server - which includes the end point for the websocket
      *
      * @author Marc R. K.
-     * @version 0.3
      * @status Under Development
      * @since 11/20/19
      */
@@ -48,6 +47,7 @@ public class HomeController implements IWebSocketCallback, IAgentCallback {
         server.getListeners().forEach(x -> {
             x.registerAddOn(addon);
         });
+
         // This is the class responsible for handling WebSocket events.
         mWebSocketManager = new WebSocketManager(this);
         // This is responsible for handling agent events
@@ -85,7 +85,6 @@ public class HomeController implements IWebSocketCallback, IAgentCallback {
      * Used to return a list of socketDTOs
      *
      * @author Marc R. K.
-     * @version 0.3
      * @status Under Development
      * @since 11/20/19
      */
@@ -102,7 +101,6 @@ public class HomeController implements IWebSocketCallback, IAgentCallback {
      * Used to register a specific socket.
      *
      * @author Marc R. K.
-     * @version 0.1
      * @status Under Development
      * @since 11/20/19
      */

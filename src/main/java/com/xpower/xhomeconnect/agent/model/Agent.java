@@ -16,6 +16,11 @@ public class Agent {
     private String mIp;
     int mId;
 
+    /**
+     * The constructor will map a AgentPOJO to a Agent object
+     * @param pojo
+     * @param ip
+     */
     public Agent(AgentPOJO pojo, String ip){
         mId = pojo.getAgent().getOemID().intValue();
         mOutlets = new ArrayList<>();

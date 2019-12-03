@@ -3,7 +3,7 @@ package com.xpower.xhomeconnect.agent.model;
 public class RegisterOutlet {
     private int mId;
     private String mName, mType;
-private     int mAgentId;
+    private int mAgentId;
 
     public RegisterOutlet(int mId, String mName, String mType, int mAgentId) {
         this.mId = mId;

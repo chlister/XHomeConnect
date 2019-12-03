@@ -32,14 +32,17 @@ public class AgentManager implements IAgentManager, AgentRunner.IAgentRunnerCall
 
     /**
      * @author Marc R. K.
-     * @version 0.2
-     * @status Under Development
+     * @status Ready for review
      * @since 11/20/19
      */
     public AgentManager(IAgentGetSocketsCallback agentGetSocketsCallback) {
         this.mAgentGetSocketsCallback = agentGetSocketsCallback;
     }
 
+    /**
+     * During init of AgentManager, the class will start a new thread which utilises the AgentRunner class
+     * @param callback IAgentCallback
+     */
     public AgentManager(IAgentCallback callback) {
         mAgents = new ArrayList<>();
         mAgentRunner = new AgentRunner(this.scanNetwork(), this);
@@ -50,38 +53,44 @@ public class AgentManager implements IAgentManager, AgentRunner.IAgentRunnerCall
     }
 
     /**
+     * Looks through the internal list of Agents
+     * converts the Outlets to OutletDTO
+     * After converting to an DTO, it sets the appliance type and name
      * @author Marc R. K.
-     * @version 0.2
-     * @status Under Development
+     * @status Ready for review
      * @since 11/20/19
+     * @return List<OutletDTO>
      */
     @Override
     public List<OutletDTO> getOutlets() {
         List<OutletDTO> outlets = new ArrayList<>();
         for (Agent agent : mAgents) {
             for (Outlet outlet : agent.getOutlets()) {
-                OutletDTO o = new OutletDTO(
+                OutletDTO dto = new OutletDTO(
                         outlet.getId(),
                         agent.getId(),
                         outlet.getName(),
                         "",
                         outlet.getState() > 0);
                 for (RegisterOutlet ro : registerOutlets) {
-                    if (ro.getmAgentId() == o.getAgentId() && ro.getmId() == o.getId()) {
-                        o.setApplianceType(ro.getmType());
-                        o.setName(ro.getmName());
+                    if (ro.getmAgentId() == dto.getAgentId() && ro.getmId() == dto.getId()) {
+                        dto.setApplianceType(ro.getmType());
+                        dto.setName(ro.getmName());
                     }
                 }
-                outlets.add(o);
+                outlets.add(dto);
             }
         }
         return outlets;
     }
 
     /**
+     * Takes an OutletDTO and adds this objects id, name, type and agentId to the registered outlets list
+     * If the outlet already exists it will be updated.
+     * An outletChangedEvent is raised at the end of either scenario
+     * @param outletDTO Outlet
      * @author Marc R. K.
-     * @version 0.1
-     * @status Defined
+     * @status Ready for review
      * @since 11/20/19
      */
     @Override
@@ -104,6 +113,16 @@ public class AgentManager implements IAgentManager, AgentRunner.IAgentRunnerCall
         callback.outletChangedEvent(getOutlets(), response);
     }
 
+    /**
+     * Changes the state of an outlet
+     * First it checks if the outlet exists
+     * Then builds the HTTP request
+     * If the server response is 200 then outletChangedEvent is raised
+     * @author Marc R. K.
+     * @status Ready for review
+     * @since 11/20/19
+     * @param outletDTO
+     */
     @Override
     public void changeState(OutletDTO outletDTO) {
         for (Agent agent : mAgents) {
@@ -140,14 +159,15 @@ public class AgentManager implements IAgentManager, AgentRunner.IAgentRunnerCall
     }
 
     /**
+     * This method return a list of IPs
+     * At this moment the list contains a single static IP
      * @author Marc R. K.
-     * @version 0.1
      * @status Defined
      * @since 11/20/19
      */
     @Override
     public List<String> scanNetwork() {
-        // TODO returns IP address' of Netio agents
+        // returns IP address' of Netio agents
         String ip = "http://192.168.1.90";
         List<String> ips = new ArrayList<>();
         ips.add(ip);
@@ -155,6 +175,11 @@ public class AgentManager implements IAgentManager, AgentRunner.IAgentRunnerCall
     }
 
 
+    /**
+     * Updates the internal list of agents
+     * Raises the outletChangedEvent
+     * @param agents
+     */
     @Override
     public void updateAgents(List<Agent> agents) {
         mAgents = agents;
