@@ -120,7 +120,7 @@ public class AgentManager implements IAgentManager, AgentRunner.IAgentRunnerCall
      * If the server response is 200 then outletChangedEvent is raised
      * @author Marc R. K.
      * @status Ready for review
-     * @since 11/20/19
+     * @since 11/27/19
      * @param outletDTO
      */
     @Override
@@ -163,7 +163,7 @@ public class AgentManager implements IAgentManager, AgentRunner.IAgentRunnerCall
      * At this moment the list contains a single static IP
      * @author Marc R. K.
      * @status Defined
-     * @since 11/20/19
+     * @since 11/26/19
      */
     @Override
     public List<String> scanNetwork() {
@@ -179,6 +179,9 @@ public class AgentManager implements IAgentManager, AgentRunner.IAgentRunnerCall
      * Updates the internal list of agents
      * Raises the outletChangedEvent
      * @param agents
+     * @author Marc R. K.
+     * @status Ready for review
+     * @since 11/27/19
      */
     @Override
     public void updateAgents(List<Agent> agents) {

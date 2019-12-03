@@ -31,7 +31,7 @@ public class HomeController implements IWebSocketCallback, IAgentCallback {
 
     /**
      * Initialises the HTTP server - which includes the end point for the websocket
-     *
+     * Initialises the Manager classes.
      * @author Marc R. K.
      * @status Under Development
      * @since 11/20/19

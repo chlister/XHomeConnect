@@ -28,6 +28,13 @@ public class AgentRunner implements Runnable {
         void updateAgents(List<Agent> agents);
     }
 
+    /**
+     * The run method will simulate a constant connection to the netio units
+     * on the network.
+     * @author Marc R. K.
+     * @status Ready for review
+     * @since 11/29/19
+     */
     @Override
     public void run() {
 

@@ -31,7 +31,7 @@ public class WebSocketManager extends WebSocketApplication {
 
     /**
      * @author Marc R. K.
-     * @status Under Development
+     * @status Ready for review
      * @since 11/20/19
      */
     @Override
@@ -42,7 +42,7 @@ public class WebSocketManager extends WebSocketApplication {
 
     /**
      * @author Marc R. K.
-     * @status Under Development
+     * @status Ready for review
      * @since 11/20/19
      */
     @Override
@@ -55,7 +55,7 @@ public class WebSocketManager extends WebSocketApplication {
      * The onMessage event handles a collection of commands.
      *
      * @author Marc R. K.
-     * @status Under Development
+     * @status Ready for review
      * @since 11/20/19
      */
     @Override
@@ -66,8 +66,8 @@ public class WebSocketManager extends WebSocketApplication {
             message = new Message(json);
             switch (message.getMethodCode()) {
                 case REGISTER:
-                    OutletDTO o = OutletDTO.deserialize((LinkedTreeMap) message.getObj());
-                    if (!o.getApplianceType().equals("NON")) {
+                    OutletDTO dto = OutletDTO.deserialize((LinkedTreeMap) message.getObj());
+                    if (!dto.getApplianceType().equals("NON")) {
                         callback.registerOutlet(OutletDTO.deserialize((LinkedTreeMap) message.getObj()));
                         socket.send(new Message(RespondCodes.OK, MethodCode.REGISTER, null).encode());
                     } else
@@ -90,6 +90,12 @@ public class WebSocketManager extends WebSocketApplication {
         }
     }
 
+    /**
+     * Logs an error to the console.
+     * Used for testing purpose only.
+     * @param webSocket the socket raising the error
+     * @param t
+     */
     @Override
     protected boolean onError(WebSocket webSocket, Throwable t) {
         System.out.println("Socket encountered an error: " + t.getMessage());
@@ -97,15 +103,24 @@ public class WebSocketManager extends WebSocketApplication {
     }
 
     /**
+     * Method will construct a Message object and send it to all connected clients
      * @author Marc R. K.
-     * @status Defined
-     * @since 11/20/19
+     * @status Ready for review
+     * @since 11/26/19
      */
     public void returnSockets(WebSocket webSocket, RespondCodes respondCodes, List<OutletDTO> outlets) {
         Message message = new Message(respondCodes, MethodCode.GET_SOCKETS, outlets);
         webSocket.send(message.encode());
     }
 
+    /**
+     * Sends the list of DTOs to all connected clients
+     * @param outlets
+     * @param response
+     * @author Marc R. K.
+     * @status Ready for review
+     * @since 11/28/19
+     */
     public void outletChangedEvent(List<OutletDTO> outlets, RespondCodes response) {
         if (!clients.isEmpty()) {
 
