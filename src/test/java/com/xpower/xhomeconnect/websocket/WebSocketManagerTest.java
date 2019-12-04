@@ -2,7 +2,6 @@ package com.xpower.xhomeconnect.websocket;
 
 import com.xpower.message.Message;
 import com.xpower.message.MethodCode;
-import com.xpower.xhomeconnect.IWebSocketCallback;
 import com.xpower.message.model.OutletDTO;
 import org.glassfish.grizzly.websockets.WebSocket;
 import org.junit.Assert;
@@ -36,17 +35,17 @@ public class WebSocketManagerTest {
         // Checks if the method reaches this part of the code
         WebSocketManager manager = new WebSocketManager(new IWebSocketCallback() {
             @Override
-            public void getSockets(WebSocket webSocket) {
+            public void onGetOutletRequest(WebSocket webSocket) {
                 Assert.assertTrue(true);
             }
 
             @Override
-            public void registerOutlet(OutletDTO outletDTO) {
+            public void onRegisterOutletRequest(OutletDTO outletDTO) {
                 Assert.assertTrue(true);
             }
 
             @Override
-            public void changeState(OutletDTO outletDTO) {
+            public void onChangeStateRequest(OutletDTO outletDTO) {
                 boolean newState = true;
                 for (OutletDTO outlet: outlets) {
                     if (outlet.getAgentId() == outletDTO.getAgentId() && outlet.getId() == outletDTO.getId()){

@@ -39,8 +39,11 @@ public class Message {
     }
 
     /**
+     * @param methodCode    MethodCode
+     * @param mObj          Object
+     * @param mRespondCodes RespondCodes
      * @author Marc R. K.
-     * @status Defined
+     * @status Done
      * @since 11/20/19
      */
     public Message(RespondCodes mRespondCodes, MethodCode methodCode, Object mObj) {
@@ -50,8 +53,11 @@ public class Message {
     }
 
     /**
+     * Deserializes a json string to Message class
+     *
+     * @param json String
      * @author Marc R. K.
-     * @status Defined
+     * @status Done
      * @since 11/20/19
      */
     public Message(String json) {
@@ -66,8 +72,9 @@ public class Message {
     }
 
     /**
+     * Serialises the Message class to json format
      * @author Marc R. K.
-     * @status Defined
+     * @status Done
      * @since 11/20/19
      */
     public String encode() {

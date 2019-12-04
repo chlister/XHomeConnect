@@ -1,3 +1,9 @@
+/**
+ * @author Marc R. K.
+ * @version 1.0
+ * @since 11/29/19
+ */
+
 package com.xpower.xhomeconnect.agent;
 
 import com.google.gson.Gson;
@@ -29,10 +35,9 @@ public class AgentRunner implements Runnable {
     }
 
     /**
-     * The run method will simulate a constant connection to the netio units
-     * on the network.
+     * The run method will simulate a constant connection to the Netio units on the network.
      * @author Marc R. K.
-     * @status Ready for review
+     * @status Done
      * @since 11/29/19
      */
     @Override

@@ -6,7 +6,7 @@
 
     <groupId>com.xpower</groupId>
     <artifactId>XHomeConnect</artifactId>
-    <version>0.0.0.25</version>
+    <version>0.0.1.0</version>
     <!--    <packaging>jar</packaging>-->
 
     <dependencies>

@@ -6,115 +6,128 @@
 package com.xpower.xhomeconnect;
 
 import com.xpower.message.RespondCodes;
-import com.xpower.xhomeconnect.agent.AgentManager;
+import com.xpower.xhomeconnect.agent.IAgentCallback;
 import com.xpower.xhomeconnect.agent.IAgentManager;
 import com.xpower.message.model.OutletDTO;
-import com.xpower.xhomeconnect.websocket.WebSocketManager;
+import com.xpower.xhomeconnect.websocket.IWebSocketCallback;
+import com.xpower.xhomeconnect.websocket.IWebSocketManager;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.grizzly.websockets.WebSocket;
 import org.glassfish.grizzly.websockets.WebSocketAddOn;
-import org.glassfish.grizzly.websockets.WebSocketEngine;
 
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Main class of the XHomeConnect module.
- */
 public class HomeController implements IWebSocketCallback, IAgentCallback {
-    IAgentManager mAgentManager;
-    WebSocketManager mWebSocketManager;
-//    IApiClientManager mApiClientManager; - TODO class not defined
+    private IAgentManager mAgentManager;
+    private IWebSocketManager mWebSocketManager;
 
-    public HomeController() {
+    /**
+     * Injects dependencies
+     *
+     * @param webSocketManager IWebSocketManager
+     * @param agentManager     IAgentManager
+     * @author Marc R. K.
+     * @status Done
+     * @since 12/01/19
+     */
+    public void setManagers(IWebSocketManager webSocketManager, IAgentManager agentManager) {
+        mAgentManager = agentManager;
+        mWebSocketManager = webSocketManager;
     }
 
     /**
      * Initialises the HTTP server - which includes the end point for the websocket
-     * Initialises the Manager classes.
+     *
      * @author Marc R. K.
-     * @status Under Development
+     * @status Done
      * @since 11/20/19
      */
     public void init() {
 
-        // Create a simple webserver. root of server is the first param - HTML files should be put here.
-        HttpServer server =
-                HttpServer.createSimpleServer("src/main/java/com/xpower/xhomeconnect/websocket", 80);
+        // If managers haven't been initialised then throw nullpointer
+        if (mAgentManager == null || mWebSocketManager == null)
+            throw new NullPointerException();
+            // Create a simple webserver. root of server is the first param - HTML files should be put here.
+            HttpServer server =
+                    HttpServer.createSimpleServer("src/main/java/com/xpower/xhomeconnect/websocket", 80);
 
-        // Adding ws: functionality to the webserver
-        WebSocketAddOn addon = new WebSocketAddOn();
-        server.getListeners().forEach(x -> {
-            x.registerAddOn(addon);
-        });
+            // Adding websocket functionality to the webserver
+            WebSocketAddOn addon = new WebSocketAddOn();
+            server.getListeners().forEach(x -> {
+                x.registerAddOn(addon);
+            });
 
-        // This is the class responsible for handling WebSocket events.
-        mWebSocketManager = new WebSocketManager(this);
-        // This is responsible for handling agent events
-        mAgentManager = new AgentManager(this);
+            // Websocket endpoint
+            mWebSocketManager.registerSocketConnection("/x", "/home");
 
-        // ws://localhost:80/x/home - url for the websocket.
-        WebSocketEngine.getEngine().register("/x", "/home", mWebSocketManager);
+            // When application closes - we close the server gracefully
+            Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println("Stopping server...");
+                    server.shutdownNow();
+                    System.out.println("Stopped server");
+                }
+            }, "shutdownHook"));
 
-        // When application closes - we close the server gracefully
-        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-            @Override
-            public void run() {
-                System.out.println("Stopping server...");
-                server.shutdownNow();
-                System.out.println("Stopped server");
+            try {
+                server.start();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        }, "shutdownHook"));
 
-        try {
-            server.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            System.out.println("Started server");
 
-        System.out.println("Started server");
+            try {
+                Thread.currentThread().join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
-        try {
-            Thread.currentThread().join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
-     * Used to return a list of socketDTOs
-     *
      * @author Marc R. K.
-     * @status Under Development
+     * @status Done
      * @since 11/20/19
+     * @param socket WebSocket
      */
     @Override
-    public void getSockets(WebSocket socket) {
+    public void onGetOutletRequest(WebSocket socket) {
         List<OutletDTO> outlets = mAgentManager.getOutlets();
         if (outlets.isEmpty())
-            mWebSocketManager.returnSockets(socket, RespondCodes.NOT_FOUND, outlets);
+            mWebSocketManager.returnOutlets(socket, RespondCodes.NOT_FOUND, outlets);
         else
-            mWebSocketManager.returnSockets(socket, RespondCodes.OK, outlets);
+            mWebSocketManager.returnOutlets(socket, RespondCodes.OK, outlets);
     }
 
     /**
-     * Used to register a specific socket.
-     *
      * @author Marc R. K.
-     * @status Under Development
+     * @status Done
      * @since 11/20/19
      */
     @Override
-    public void registerOutlet(OutletDTO outletDTO) {
+    public void onRegisterOutletRequest(OutletDTO outletDTO) {
         mAgentManager.updateOutlet(outletDTO);
     }
 
+    /**
+     * @author Marc R. K.
+     * @status Done
+     * @since 11/27/19
+     */
     @Override
-    public void changeState(OutletDTO outletDTO) {
+    public void onChangeStateRequest(OutletDTO outletDTO) {
         mAgentManager.changeState(outletDTO);
 
     }
 
+    /**
+     * @author Marc R. K.
+     * @status Done
+     * @since 11/27/19
+     */
     @Override
     public void outletChangedEvent(List<OutletDTO> outlets, RespondCodes response) {
         mWebSocketManager.outletChangedEvent(outlets, response);

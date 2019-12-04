@@ -1,15 +1,13 @@
 /**
  * @author Marc R. K.
  * @version 1.0
- * @since 11/26/19
+ * @since 11/20/19
  */
 
 package com.xpower.xhomeconnect.agent;
 
 import com.google.gson.Gson;
 import com.xpower.message.RespondCodes;
-import com.xpower.xhomeconnect.IAgentCallback;
-import com.xpower.xhomeconnect.IAgentGetSocketsCallback;
 import com.xpower.message.model.OutletDTO;
 import com.xpower.xhomeconnect.agent.agentdto.AgentPOJO;
 import com.xpower.xhomeconnect.agent.model.Agent;
@@ -23,25 +21,17 @@ import java.util.List;
 
 public class AgentManager implements IAgentManager, AgentRunner.IAgentRunnerCallback {
 
-    IAgentGetSocketsCallback mAgentGetSocketsCallback;
     IAgentCallback callback;
     List<Agent> mAgents;
     List<RegisterOutlet> registerOutlets;
     private AgentRunner mAgentRunner;
 
-
-    /**
-     * @author Marc R. K.
-     * @status Ready for review
-     * @since 11/20/19
-     */
-    public AgentManager(IAgentGetSocketsCallback agentGetSocketsCallback) {
-        this.mAgentGetSocketsCallback = agentGetSocketsCallback;
-    }
-
     /**
      * During init of AgentManager, the class will start a new thread which utilises the AgentRunner class
      * @param callback IAgentCallback
+     * @author Marc R. K.
+     * @status Done
+     * @since 11/20/19
      */
     public AgentManager(IAgentCallback callback) {
         mAgents = new ArrayList<>();
@@ -57,7 +47,7 @@ public class AgentManager implements IAgentManager, AgentRunner.IAgentRunnerCall
      * converts the Outlets to OutletDTO
      * After converting to an DTO, it sets the appliance type and name
      * @author Marc R. K.
-     * @status Ready for review
+     * @status Done
      * @since 11/20/19
      * @return List<OutletDTO>
      */
@@ -88,9 +78,9 @@ public class AgentManager implements IAgentManager, AgentRunner.IAgentRunnerCall
      * Takes an OutletDTO and adds this objects id, name, type and agentId to the registered outlets list
      * If the outlet already exists it will be updated.
      * An outletChangedEvent is raised at the end of either scenario
-     * @param outletDTO Outlet
+     * @param outletDTO OutletDTO
      * @author Marc R. K.
-     * @status Ready for review
+     * @status Done
      * @since 11/20/19
      */
     @Override
@@ -119,9 +109,9 @@ public class AgentManager implements IAgentManager, AgentRunner.IAgentRunnerCall
      * Then builds the HTTP request
      * If the server response is 200 then outletChangedEvent is raised
      * @author Marc R. K.
-     * @status Ready for review
+     * @status Done
      * @since 11/27/19
-     * @param outletDTO
+     * @param outletDTO OutletDTO
      */
     @Override
     public void changeState(OutletDTO outletDTO) {
@@ -162,8 +152,9 @@ public class AgentManager implements IAgentManager, AgentRunner.IAgentRunnerCall
      * This method return a list of IPs
      * At this moment the list contains a single static IP
      * @author Marc R. K.
-     * @status Defined
+     * @status Done
      * @since 11/26/19
+     * @return List<String> ips
      */
     @Override
     public List<String> scanNetwork() {
@@ -178,9 +169,9 @@ public class AgentManager implements IAgentManager, AgentRunner.IAgentRunnerCall
     /**
      * Updates the internal list of agents
      * Raises the outletChangedEvent
-     * @param agents
+     * @param agents List<Agent>
      * @author Marc R. K.
-     * @status Ready for review
+     * @status Done
      * @since 11/27/19
      */
     @Override

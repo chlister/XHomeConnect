@@ -12,7 +12,6 @@ import java.util.List;
 
 public interface IAgentManager {
     List<OutletDTO> getOutlets();
-//    Agent getAgent(String agent); // TODO implement when Agent class is defined
     void updateOutlet(OutletDTO outletDTO);
     void changeState(OutletDTO outletDTO);
     List<String> scanNetwork();

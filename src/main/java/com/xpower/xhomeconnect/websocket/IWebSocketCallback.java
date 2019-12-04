@@ -1,4 +1,4 @@
-package com.xpower.xhomeconnect;
+package com.xpower.xhomeconnect.websocket;
 
 import com.xpower.message.model.OutletDTO;
 import org.glassfish.grizzly.websockets.WebSocket;
@@ -11,9 +11,9 @@ import org.glassfish.grizzly.websockets.WebSocket;
 
 public interface IWebSocketCallback {
 
-    void changeState(OutletDTO outletDTO);
+    void onChangeStateRequest(OutletDTO outletDTO);
 
-    void getSockets(WebSocket socket);
+    void onGetOutletRequest(WebSocket socket);
 
-    void registerOutlet(OutletDTO outletDTO);
+    void onRegisterOutletRequest(OutletDTO outletDTO);
 }
