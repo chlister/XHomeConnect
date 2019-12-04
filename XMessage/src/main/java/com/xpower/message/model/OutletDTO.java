@@ -21,7 +21,7 @@ public class OutletDTO {
 
     /**
      * @author Marc R. K.
-     * @status Under Development
+     * @status Done
      * @since 11/20/19
      */
     public OutletDTO(int id, int agentId, String name, String applianceType, boolean state) {
@@ -42,7 +42,7 @@ public class OutletDTO {
 
     /**
      * @author Marc R. K.
-     * @status Under Development
+     * @status Done
      * @since 11/20/19
      */
     public static OutletDTO deserialize(LinkedTreeMap tree) {
