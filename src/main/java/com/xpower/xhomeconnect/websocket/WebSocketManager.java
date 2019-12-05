@@ -76,10 +76,10 @@ public class WebSocketManager extends WebSocketApplication implements IWebSocket
                     } else
                         socket.send(new Message(RespondCodes.NOT_FOUND, MethodCode.REGISTER, null).encode());
                     break;
-                case GET_SOCKETS:
+                case GET_OUTLETS:
                     callback.onGetOutletRequest(socket);
                     break;
-                case CHANGE_SOCKET_STATE:
+                case CHANGE_OUTLET_STATE:
                     callback.onChangeStateRequest(OutletDTO.deserialize((LinkedTreeMap) message.getObj()));
                     break;
                 default:
@@ -89,7 +89,7 @@ public class WebSocketManager extends WebSocketApplication implements IWebSocket
             }
         } catch (NullPointerException e) {
             System.out.println("JSON doesn't match convention");
-            socket.send(new Message(RespondCodes.NOT_FOUND, null, null).encode()); // Sends error to client
+            socket.send(new Message(RespondCodes.PARSE_ERROR, null, null).encode()); // Sends error to client
             System.out.println(json);
         }
     }
@@ -122,7 +122,7 @@ public class WebSocketManager extends WebSocketApplication implements IWebSocket
      */
     @Override
     public void returnOutlets(WebSocket webSocket, RespondCodes respondCodes, List<OutletDTO> outlets) {
-        Message message = new Message(respondCodes, MethodCode.GET_SOCKETS, outlets);
+        Message message = new Message(respondCodes, MethodCode.GET_OUTLETS, outlets);
         webSocket.send(message.encode());
     }
 

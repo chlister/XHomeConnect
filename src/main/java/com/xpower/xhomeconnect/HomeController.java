@@ -48,50 +48,50 @@ public class HomeController implements IWebSocketCallback, IAgentCallback {
         // If managers haven't been initialised then throw nullpointer
         if (mAgentManager == null || mWebSocketManager == null)
             throw new NullPointerException();
-            // Create a simple webserver. root of server is the first param - HTML files should be put here.
-            HttpServer server =
-                    HttpServer.createSimpleServer("src/main/java/com/xpower/xhomeconnect/websocket", 80);
+        // Create a simple webserver. root of server is the first param - HTML files should be put here.
+        HttpServer server =
+                HttpServer.createSimpleServer("src/main/java/com/xpower/xhomeconnect/websocket", 80);
 
-            // Adding websocket functionality to the webserver
-            WebSocketAddOn addon = new WebSocketAddOn();
-            server.getListeners().forEach(x -> {
-                x.registerAddOn(addon);
-            });
+        // Adding websocket functionality to the webserver
+        WebSocketAddOn addon = new WebSocketAddOn();
+        server.getListeners().forEach(x -> {
+            x.registerAddOn(addon);
+        });
 
-            // Websocket endpoint
-            mWebSocketManager.registerSocketConnection("/x", "/home");
+        // Websocket endpoint
+        mWebSocketManager.registerSocketConnection("/x", "/home");
 
-            // When application closes - we close the server gracefully
-            Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    System.out.println("Stopping server...");
-                    server.shutdownNow();
-                    System.out.println("Stopped server");
-                }
-            }, "shutdownHook"));
-
-            try {
-                server.start();
-            } catch (IOException e) {
-                e.printStackTrace();
+        // When application closes - we close the server gracefully
+        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+            @Override
+            public void run() {
+                System.out.println("Stopping server...");
+                server.shutdownNow();
+                System.out.println("Stopped server");
             }
+        }, "shutdownHook"));
 
-            System.out.println("Started server");
+        try {
+            server.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-            try {
-                Thread.currentThread().join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        System.out.println("Started server");
+
+        try {
+            Thread.currentThread().join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
     }
 
     /**
+     * @param socket WebSocket
      * @author Marc R. K.
      * @status Done
      * @since 11/20/19
-     * @param socket WebSocket
      */
     @Override
     public void onGetOutletRequest(WebSocket socket) {

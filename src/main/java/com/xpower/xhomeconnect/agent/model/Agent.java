@@ -14,7 +14,7 @@ import java.util.List;
 public class Agent {
     private List<Outlet> mOutlets;
     private String mIp;
-    int mId;
+    private int mId;
 
     /**
      * The constructor will map a AgentPOJO to a Agent object
