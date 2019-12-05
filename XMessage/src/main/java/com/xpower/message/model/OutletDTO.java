@@ -62,7 +62,7 @@ public class OutletDTO {
      * @since 11/20/19
      */
     public static List<OutletDTO> deserialize(ArrayList<LinkedTreeMap> list) {
-        List<OutletDTO> dto = new ArrayList<>();
+        List<OutletDTO> dto = new ArrayList<OutletDTO>();
         for (LinkedTreeMap treeMap : list) {
             dto.add(deserialize(treeMap));
         }

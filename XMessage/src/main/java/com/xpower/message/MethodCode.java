@@ -8,6 +8,6 @@ package com.xpower.message;
 
 public enum MethodCode {
     REGISTER,
-    GET_SOCKETS,
-    CHANGE_SOCKET_STATE
+    GET_OUTLETS,
+    CHANGE_OUTLET_STATE
 }

@@ -9,6 +9,5 @@ package com.xpower.message;
 public enum RespondCodes {
     OK,
     NOT_FOUND,
-    CREATED,
-    UNAUTHORIZED
+    PARSE_ERROR
 }
