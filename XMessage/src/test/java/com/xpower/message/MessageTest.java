@@ -2,9 +2,10 @@ package com.xpower.message;
 
 import com.xpower.message.model.OutletDTO;
 import org.junit.Assert;
+import org.junit.Before;
 
 public class MessageTest {
-    String testJson = "{\"mRespondCodes\":\"OK\",\"mMethodCode\":\"GET_SOCKETS\",\"mObj\":{\"id\":1,\"agentId\":1,\"state\":false,\"name\":\"Test\",\"applianceType\":\"NON\"}}";
+    String testJson = "{\"mRespondCodes\":\"OK\",\"mMethodCode\":\"GET_OUTLETS\",\"mObj\":{\"id\":1,\"agentId\":1,\"state\":false,\"name\":\"Test\",\"applianceType\":\"NON\"}}";
 
     Message testObject = new Message(
             RespondCodes.OK,
